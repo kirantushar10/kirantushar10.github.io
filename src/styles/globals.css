@@ -370,20 +370,22 @@
 
 /* ============================================================
    Timeline (experience) — hairline rail + gold spine drawn
-   on scroll (TimelineLine), gold nodes with pulse ring
+   on scroll (TimelineLine), gold nodes with pulse ring.
+   Spine + rail sit at the node column (2rem = pl-8 / sm:pl-12),
+   nodes are centered on the spine and glow on scroll.
    ============================================================ */
 .tl-rail {
   position: absolute;
   top: 6px;
   bottom: 6px;
-  left: 0;
+  left: 56px;
   width: 1px;
   background: var(--color-rule);
 }
 .timeline-line {
   position: absolute;
   top: 6px;
-  left: 0;
+  left: 55.5px;
   width: 2px;
   height: calc(100% - 12px);
   background: linear-gradient(180deg, #d9c6a4, rgba(217, 198, 164, 0.4));
@@ -400,19 +402,23 @@
   border-radius: 50%;
   background: var(--color-gold);
   box-shadow: 0 0 0 4px rgba(217, 198, 164, 0.12);
+  opacity: 0;
+  transition: opacity 0.5s ease, box-shadow 0.5s ease;
 }
-.tl-node::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid rgba(217, 198, 164, 0.35);
-  animation: nodePulse 2.6s ease-out infinite;
+.tl-node.visible {
+  opacity: 1;
+  box-shadow:
+    0 0 0 4px rgba(217, 198, 164, 0.18),
+    0 0 14px rgba(217, 198, 164, 0.7);
+  animation: nodePulse 1.8s ease-out infinite;
 }
 @keyframes nodePulse {
   0% {
     transform: scale(0.7);
     opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
   }
   100% {
     transform: scale(1.9);
@@ -473,7 +479,7 @@
   .logo-dot,
   .caret,
   .scroll-cue,
-  .tl-node::after {
+  .tl-node.visible {
     animation: none !important;
   }
   [data-reveal] {
@@ -490,6 +496,10 @@
   }
   .timeline-line {
     transform: scaleY(1) !important;
+  }
+  .tl-node {
+    opacity: 1 !important;
+    box-shadow: 0 0 0 4px rgba(217, 198, 164, 0.18), 0 0 14px rgba(217, 198, 164, 0.7) !important;
   }
   .scroll-progress {
     display: none;
