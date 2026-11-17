@@ -1,0 +1,54 @@
+---
+const navItems = [
+  { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Education', href: '#education' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<header id="site-nav" class="navbar fixed top-0 left-0 right-0 z-50 py-5 px-4 sm:px-6">
+  <nav class="max-w-6xl mx-auto flex items-center justify-between gap-6">
+    <!-- Brand / Logo -->
+    <a href="#" class="flex items-center gap-3 group" aria-label="Home">
+      <span class="w-8 h-8 border border-amber-dim flex items-center justify-center font-mono text-xs font-semibold text-amber group-hover:bg-amber group-hover:text-char transition-colors duration-300">
+        TK
+      </span>
+      <span class="font-mono text-xs tracking-[0.08em] text-ink group-hover:text-amber transition-colors">
+        Tushar<span class="text-amber">.ai</span>
+      </span>
+    </a>
+
+    <!-- Nav Links (Desktop) -->
+    <div class="hidden md:flex items-center gap-7">
+      {navItems.map((item, i) => (
+        <a
+          href={item.href}
+          class="group/link font-mono text-[11px] uppercase tracking-[0.18em] text-muted hover:text-ink transition-colors duration-200"
+        >
+          <span class="text-amber/60 group-hover/link:text-amber transition-colors mr-1.5">0{i + 1}</span>
+          {item.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Quick Action / Contact -->
+    <a
+      href="#contact"
+      class="font-mono text-[11px] uppercase tracking-[0.18em] px-4 py-2 border border-rule text-ink hover:border-amber-dim hover:text-amber transition-colors duration-300"
+    >
+      Connect
+    </a>
+  </nav>
+</header>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('navbar-scrolled', window.scrollY > window.innerHeight * 0.7);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
