@@ -43,6 +43,22 @@ export default function HeroReframe() {
     window.addEventListener('resize', measure, { passive: true });
 
     const ruleEls = rulesRef.current;
+    // The labels sit on the bars but are themselves hidden until the
+    // bar they're attached to has drawn — so mark them visible when the
+    // first bar appears, and fade them out with the dissolve.
+    const labelEls = ruleEls
+      .map((el) => el?.querySelector('.relabel-text') as HTMLElement | null)
+      .filter(Boolean) as HTMLElement[];
+    if (labelEls.length) labelEls.forEach((el) => el.classList.add('visible'));
+
+    // Keep the visible flag in sync with the dissolve so the labels
+    // fade out with their bars when the hero has scrolled fully past.
+    const syncLabels = (t: number) => {
+      const dissolve = t >= 1 ? (1.25 - t) / 0.25 : 1;
+      labelEls.forEach((el) => {
+        el.classList.toggle('visible', dissolve > 0.01);
+      });
+    };
 
     const apply = (scrollY: number) => {
       // t: 0 = hero fully in view, 1 = hero fully scrolled past
@@ -68,6 +84,7 @@ export default function HeroReframe() {
         el.style.width = (local * 40).toFixed(2) + '%';
         el.style.opacity = (local * dissolve).toFixed(3);
       }
+      syncLabels(t);
     };
 
     const unsub = subscribe((y: number) => apply(y));
@@ -93,10 +110,11 @@ export default function HeroReframe() {
         padding: '22vh 0',
       }}
     >
-      {['RETRIEVAL', 'AUGMENTATION', 'GENERATION'].map((label, i) => (
+      {['retrieval', 'augmentation', 'generation'].map((label, i) => (
         <span
           key={label}
           ref={(el) => (rulesRef.current[i] = el)}
+          className="relabel fade-in"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -117,6 +135,7 @@ export default function HeroReframe() {
             }}
           />
           <span
+            className="relabel-text"
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '10px',

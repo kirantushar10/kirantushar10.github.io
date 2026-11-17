@@ -6,15 +6,15 @@
    animation (reveal, mask-rise, parallax, drawn spine, marquee).
    ============================================================ */
 @theme {
-  --color-bg: #141513;
-  --color-surface: #191a18;
-  --color-elevated: #242521;
-  --color-card: #1c1d1a;
-  --color-ink: #ece6db;
-  --color-mid: #c2bcb1;
-  --color-dim: #aaa499;
-  --color-gold: #d9c6a4;
-  --color-rule: rgba(236, 230, 219, 0.15);
+  --color-bg: #1a1a18;
+  --color-surface: #21221f;
+  --color-elevated: #2c2d29;
+  --color-card: #232420;
+  --color-ink: #f3ede0;
+  --color-mid: #d4cdc0;
+  --color-dim: #b9b2a5;
+  --color-gold: #e8c98a;
+  --color-rule: rgba(243, 237, 224, 0.16);
 
   --font-sans: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Segoe UI",
     system-ui, sans-serif;
@@ -44,30 +44,31 @@
     z-index: 0;
     pointer-events: none;
     background:
-      linear-gradient(rgba(236, 230, 219, 0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(236, 230, 219, 0.018) 1px, transparent 1px);
+      linear-gradient(rgba(243, 237, 224, 0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243, 237, 224, 0.028) 1px, transparent 1px);
     background-size: 64px 64px;
     -webkit-mask-image: linear-gradient(
       to bottom,
       transparent,
-      black 15%,
-      black 75%,
+      black 12%,
+      black 82%,
       transparent
     );
     mask-image: linear-gradient(
       to bottom,
       transparent,
-      black 15%,
-      black 75%,
+      black 12%,
+      black 82%,
       transparent
     );
-    opacity: 0.6;
+    opacity: 0.75;
     animation: gridDrift 26s linear infinite;
   }
 
   /* Soft aurora mesh — three slow gold/amber blobs. Kept in the
      single warm accent channel so it reads as atmosphere, not
-     rainbow neon. Low opacity; never competes with content. */
+     rainbow neon. Brightness raised so the page no longer reads
+     as a flat dark void. */
   body::after {
     content: "";
     position: fixed;
@@ -75,30 +76,24 @@
     z-index: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 70% 50% at 18% 22%, rgba(217, 198, 164, 0.055), transparent 60%),
-      radial-gradient(ellipse 60% 45% at 82% 68%, rgba(217, 198, 164, 0.045), transparent 62%),
-      radial-gradient(ellipse 50% 40% at 50% 88%, rgba(217, 198, 164, 0.040), transparent 60%);
+      radial-gradient(ellipse 70% 50% at 18% 22%, rgba(232, 201, 138, 0.09), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 82% 68%, rgba(232, 201, 138, 0.07), transparent 62%),
+      radial-gradient(ellipse 50% 40% at 50% 92%, rgba(232, 201, 138, 0.06), transparent 60%);
     animation: auroraDrift 34s ease-in-out infinite alternate;
     mix-blend-mode: screen;
   }
 
-  /* Soft aurora mesh — three slow gold/amber blobs. Kept in the
-     single warm accent channel so it reads as atmosphere, not
-     rainbow neon. Low opacity; never competes with content.
-     (The scroll-following radial glow is rendered by Cinematic.tsx
-     as a real DOM element, so it doesn't need this pseudo.) */
-  body::after {
-    content: "";
+  /* Film grain — pure CSS noise, sits above the aurora, below content.
+     Subtle; gives the dark field texture instead of a flat void. */
+  body .grain {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 50% at 18% 22%, rgba(217, 198, 164, 0.055), transparent 60%),
-      radial-gradient(ellipse 60% 45% at 82% 68%, rgba(217, 198, 164, 0.045), transparent 62%),
-      radial-gradient(ellipse 50% 40% at 50% 88%, rgba(217, 198, 164, 0.040), transparent 60%);
-    animation: auroraDrift 34s ease-in-out infinite alternate;
-    mix-blend-mode: screen;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>");
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
   }
 
   @keyframes gridDrift {
@@ -130,7 +125,7 @@
   }
 
   ::selection {
-    background: rgba(217, 198, 164, 0.85);
+    background: rgba(232, 201, 138, 0.85);
     color: #141513;
   }
 
@@ -151,7 +146,7 @@
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(217, 198, 164, 0.4);
+    background: rgba(232, 201, 138, 0.4);
   }
 }
 
@@ -167,8 +162,8 @@
   z-index: 60;
   transform-origin: left;
   transform: scaleX(0);
-  background: linear-gradient(90deg, #d9c6a4, #f0e2c4);
-  box-shadow: 0 0 10px rgba(217, 198, 164, 0.5);
+  background: linear-gradient(90deg, #e8c98a, #f0e2c4);
+  box-shadow: 0 0 10px rgba(232, 201, 138, 0.5);
   pointer-events: none;
   will-change: transform;
 }
@@ -208,7 +203,7 @@
   margin-left: 8px;
   border-radius: 50%;
   background: var(--color-gold);
-  box-shadow: 0 0 12px rgba(217, 198, 164, 0.7);
+  box-shadow: 0 0 12px rgba(232, 201, 138, 0.7);
   animation: dotBlink 2.4s ease-in-out infinite;
   vertical-align: 2px;
 }
@@ -216,7 +211,7 @@
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 12px rgba(217, 198, 164, 0.7);
+    box-shadow: 0 0 12px rgba(232, 201, 138, 0.7);
   }
   50% {
     opacity: 0.35;
@@ -322,6 +317,114 @@
   transform: translateY(0);
 }
 
+/* Fade-in for the reframe labels — they draw as bars, so they need a
+   simple opacity rise rather than a mask-slide. */
+[data-reveal="fade"] {
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--rd, 0ms);
+}
+.js [data-reveal="fade"]:not(.in) {
+  opacity: 0;
+}
+.js [data-reveal="fade"].in {
+  opacity: 1;
+}
+
+/* Reframe pipeline labels — hidden until their bar draws, then fade in
+   with the bar. The bars themselves are driven by JS width/opacity. */
+.relabel-text {
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.relabel.visible .relabel-text {
+  opacity: 1;
+}
+
+/* ============================================================
+   Skills marquee — chips sweep horizontally, alternating direction
+   per row, with a gold glow. Pause on hover. Static under
+   reduced-motion / no-JS.
+   ============================================================ */
+.marquee {
+  display: flex;
+  width: max-content;
+  gap: 14px;
+  padding: 4px 0;
+  align-items: center;
+}
+.marquee-track {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.marquee-row {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding: 6px 0;
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+.marquee-row .marquee {
+  animation: marquee-scroll 34s linear infinite;
+}
+.marquee-row.rtl .marquee {
+  animation: marquee-scroll-rtl 38s linear infinite;
+}
+.marquee-row:hover .marquee,
+.marquee-row:focus-within .marquee {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-scroll-rtl {
+  from { transform: translateX(0); }
+  to { transform: translateX(50%); }
+}
+.marquee-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 15px;
+  border: 1px solid var(--color-rule);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-mid);
+  white-space: nowrap;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+.marquee-chip .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 6px rgba(232, 201, 138, 0.55);
+  opacity: 0.7;
+}
+.marquee-chip:hover {
+  color: var(--color-ink);
+  border-color: rgba(232, 201, 138, 0.55);
+  background-color: var(--color-elevated);
+  box-shadow: 0 0 14px rgba(232, 201, 138, 0.28);
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-row .marquee,
+  .marquee-row.rtl .marquee {
+    animation: none;
+    transform: none;
+  }
+}
+
 /* ============================================================
    Parallax — layers move with the shared scroll clock.
    data-depth controls speed; set via [data-parallax] elements.
@@ -344,7 +447,7 @@
 .work-row:focus-within {
   background-color: var(--color-card);
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(217, 198, 164, 0.10), 0 2px 6px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 32px rgba(232, 201, 138, 0.10), 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 .work-row .work-title {
   transition: color 0.3s ease;
@@ -401,7 +504,7 @@
 }
 .chip:hover {
   color: var(--color-ink);
-  border-color: rgba(217, 198, 164, 0.5);
+  border-color: rgba(232, 201, 138, 0.5);
   background-color: var(--color-elevated);
   transform: translateY(-2px);
 }
@@ -426,28 +529,33 @@
   left: 55.5px;
   width: 2px;
   height: calc(100% - 12px);
-  background: linear-gradient(180deg, #d9c6a4, rgba(217, 198, 164, 0.4));
+  background: linear-gradient(180deg, #e8c98a, rgba(232, 201, 138, 0.4));
   transform: scaleY(0);
   transform-origin: top;
   will-change: transform;
 }
 .tl-node {
   position: absolute;
-  left: -4px;
+  left: 1.5rem;
   top: 6px;
   width: 9px;
   height: 9px;
   border-radius: 50%;
   background: var(--color-gold);
-  box-shadow: 0 0 0 4px rgba(217, 198, 164, 0.12);
+  box-shadow: 0 0 0 4px rgba(232, 201, 138, 0.12);
   opacity: 0;
   transition: opacity 0.5s ease, box-shadow 0.5s ease;
+}
+@media (min-width: 640) {
+  .tl-node {
+    left: 0.5rem;
+  }
 }
 .tl-node.visible {
   opacity: 1;
   box-shadow:
-    0 0 0 4px rgba(217, 198, 164, 0.18),
-    0 0 14px rgba(217, 198, 164, 0.7);
+    0 0 0 4px rgba(232, 201, 138, 0.18),
+    0 0 14px rgba(232, 201, 138, 0.7);
   animation: nodePulse 1.8s ease-out infinite;
 }
 @keyframes nodePulse {
@@ -524,6 +632,7 @@
     scroll-behavior: auto;
   }
   body::before,
+  body .grain,
   .hero-bg,
   .logo-dot,
   .caret,
@@ -548,7 +657,7 @@
   }
   .tl-node {
     opacity: 1 !important;
-    box-shadow: 0 0 0 4px rgba(217, 198, 164, 0.18), 0 0 14px rgba(217, 198, 164, 0.7) !important;
+    box-shadow: 0 0 0 4px rgba(232, 201, 138, 0.18), 0 0 14px rgba(232, 201, 138, 0.7) !important;
   }
   .scroll-progress {
     display: none;
