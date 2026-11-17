@@ -1,144 +1,10 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import FlowField from '../components/FlowField';
-import HeroParallax from '../components/HeroParallax';
-import ProjectCard from '../components/ProjectCard';
-import SkillBadge from '../components/SkillBadge.astro';
+import Cinematic from '../components/Cinematic';
 import TimelineLine from '../components/TimelineLine';
 import '../styles/globals.css';
-
-// Project Data
-const featuredProjects = [
-  {
-    title: 'Conversational RAG Assistant',
-    description: 'Production-grade conversational RAG platform utilizing semantic retrieval, memory context tracking, and low-latency inference with real-time token tracking.',
-    tags: ['LangChain', 'Groq (LLaMA 3)', 'ChromaDB', 'LangSmith', 'Python'],
-    featured: true,
-    githubUrl: 'https://github.com/kirantushar10/Conversational-RAG-Assistant',
-  },
-  {
-    title: 'Agentic Search Engine',
-    description: 'Autonomous reasoning agent built with LangGraph that dynamically routes queries between Wikipedia, ArXiv academic papers, and live web search APIs.',
-    tags: ['LangGraph', 'FAISS', 'Hugging Face', 'LangSmith', 'Python'],
-    featured: true,
-    githubUrl: 'https://github.com/kirantushar10/Search-Engine-with-Tools-and-Agents',
-  },
-  {
-    title: 'End-to-End ML Pipeline',
-    description: 'Complete automated MLOps pipeline handling data ingestion, validation, experiment tracking, model versioning, and CI/CD containerized deployments.',
-    tags: ['MLflow', 'Docker', 'FastAPI', 'GitHub Actions', 'DVC'],
-    featured: true,
-    githubUrl: 'https://github.com/kirantushar10/Machine-Learning-Pipeline-with-DVC-MLflow-and-DagsHub',
-  },
-  {
-    title: 'Automated CI/CD Flask Pipeline',
-    description: 'Automated CI/CD pipeline using Pytest, Docker, and GitHub Actions for continuous build-test-deploy workflow on every git commit.',
-    tags: ['Docker', 'GitHub Actions', 'Flask', 'Pytest'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/CI-CD-Pipeline-for-Dockerized-Flask-Application',
-  },
-  {
-    title: 'Enterprise Airflow & Postgres ETL',
-    description: 'Production-style Airflow pipeline pulling NASA APOD API data, transforming JSON payloads, and loading into Dockerized Postgres via custom hooks.',
-    tags: ['Apache Airflow', 'PostgreSQL', 'Docker', 'ETL'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/Apache-Airflow-ETL-With-Postgres-and-API',
-  },
-  {
-    title: 'NVIDIA NIM Document QA Assistant',
-    description: 'Interactive Streamlit app leveraging NVIDIA Inference Microservices, FAISS vector search, and NVIDIA-hosted LLaMA 3.3 (70B) for deep document QA.',
-    tags: ['NVIDIA NIM', 'LLaMA 3.3', 'FAISS', 'Streamlit'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/NVIDIA-NIM-RAG-Demo',
-  },
-  {
-    title: 'Multi-Strategy Summarizer',
-    description: 'High-speed document summarizer supporting Stuff, Map-Reduce, and Refine chain architectures with multilingual output and token usage telemetry.',
-    tags: ['LangChain', 'Groq API', 'LLaMA 3.1', 'NLP'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/Text-Summarization-using-LangChain-and-Groq-LLaMA',
-  },
-  {
-    title: 'Shakespeare LSTM vs GRU Model',
-    description: 'Architectural benchmark comparison of LSTM vs GRU deep learning models trained on Hamlet, deployed with side-by-side interactive predictor.',
-    tags: ['LSTM', 'GRU', 'TensorFlow', 'Streamlit'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/HamletGPT-Next-Word-Prediction-with-LSTM-and-GRU',
-  },
-  {
-    title: 'Movie Review Sentiment Analysis',
-    description: 'Recurrent Neural Network (RNN) binary classification model built with Keras/TensorFlow for real-time movie review sentiment inference.',
-    tags: ['RNN', 'Keras', 'NLP', 'Streamlit'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/IMDB-Movie-Review-Sentiment-Analyzer-using-RNN',
-  },
-  {
-    title: 'Financial Analytics & Time-Series ARIMA',
-    description: 'Financial dashboard calculating technical indicators (RSI, MACD) and rendering 30-day ARIMA time-series price forecasts.',
-    tags: ['ARIMA', 'Time Series', 'yfinance', 'Plotly'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/Stock-Market-Analysis-and-Time-Series-Forecasting',
-  },
-  {
-    title: 'Customer Churn Prediction System',
-    description: 'End-to-end deep learning churn classifier built with Keras & Scikit-learn preprocessing, deployed with an interactive web GUI.',
-    tags: ['ANN', 'Deep Learning', 'Scikit-Learn', 'Streamlit'],
-    featured: false,
-    githubUrl: 'https://github.com/kirantushar10/ANN-Classification-Churn',
-  },
-];
-
-const experiences = [
-  {
-    role: 'AI/ML Engineer Intern',
-    company: 'Analog Devices',
-    location: 'Munich, Germany',
-    period: 'May 2026 – Oct 2026',
-    bullets: [
-      'Built an AI-assisted analytics platform cutting data exploration from ~50 min to ~10 sec via an interactive knowledge graph.',
-      'Developed async FastAPI, PostgreSQL, and Docker backend with Redis session management.',
-      'Automated nightly data updates with Apache Airflow ETL pipelines.',
-      'Integrated LLMs via Portkey with multi-hop retrieval, model routing, and grounding checks.',
-      'Built Cytoscape.js knowledge-graph UI and Chrome extension with multi-turn memory.',
-    ],
-  },
-  {
-    role: 'Student Assistant – Cyber-Physical Systems',
-    company: 'Technische Universität Berlin',
-    location: 'Berlin, Germany',
-    period: 'Mar 2026 – Apr 2026',
-    bullets: [
-      'Delivered weekly ML and Python labs for 150+ engineering students.',
-      'Mentored students on debugging and maintained the course GitHub repository.',
-    ],
-  },
-  {
-    role: 'Associate Software Engineer II',
-    company: 'Carelon Global Solutions',
-    location: 'Bengaluru, India',
-    period: 'Aug 2022 – May 2023',
-    bullets: [
-      'Backend transaction processing on IBM z/OS with COBOL, JCL, and IBM Db2.',
-      'Automated 15+ JCL scripts (saving 10+ hrs/week) and resolved 50+ production incidents.',
-    ],
-  },
-  {
-    role: 'Web Developer and Cyber Security Intern',
-    company: 'Bharat Heavy Electricals Limited (BHEL)',
-    location: 'Nagpur, India',
-    period: 'Sept 2021 – Oct 2021',
-    bullets: [
-      'Reduced report generation by 30% via multi-threaded PHP/PL/SQL processing.',
-      'Conducted vulnerability assessments and ISO 27001:2013 compliance testing.',
-    ],
-  },
-];
-
-const skillsGenerativeAI = ['LLM Applications', 'RAG Pipelines', 'AI Agents', 'LangChain', 'LangGraph', 'Hugging Face', 'LangSmith', 'Portkey', 'Groq (LLaMA 3)'];
-const skillsBackendMLOps = ['FastAPI', 'Docker', 'MLflow', 'DVC', 'GitHub Actions CI/CD', 'Apache Airflow', 'AsyncIO'];
-const skillsDatabases = ['ChromaDB', 'FAISS', 'PostgreSQL', 'MongoDB', 'Redis', 'MySQL', 'IBM Db2'];
-const skillsLanguages = ['Python', 'TypeScript', 'JavaScript', 'SQL', 'TensorFlow', 'Keras', 'Scikit-Learn', 'Pandas / NumPy'];
+import { caseStudies, projects, experiences, skillGroups } from '../data/work';
 ---
 
 <html lang="en" class="scroll-smooth">
@@ -147,100 +13,189 @@ const skillsLanguages = ['Python', 'TypeScript', 'JavaScript', 'SQL', 'TensorFlo
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-
-    <!-- Primary Meta Tags -->
-    <title>Tushar Kiran | AI/ML Engineer & RAG Specialist</title>
-    <meta name="title" content="Tushar Kiran | AI/ML Engineer & RAG Specialist" />
-    <meta name="description" content="AI/ML Specialist building production LLM applications, RAG pipelines, and agentic AI systems for enterprise workflows. Based in Munich, Germany." />
-
-    <!-- Open Graph -->
+    <title>Tushar Kiran | AI/ML Engineer</title>
+    <meta
+      name="description"
+      content="Tushar Kiran builds production LLM applications, RAG pipelines, and agentic systems. AI/ML engineer in Munich, Germany."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kirantushar10.github.io/" />
     <meta property="og:title" content="Tushar Kiran | AI/ML Engineer" />
-    <meta property="og:description" content="Building AI Agents & RAG Pipelines for Enterprise Systems" />
-
-    <!-- Type -->
+    <meta property="og:description" content="Production LLM applications, RAG pipelines, and agentic systems. Based in Munich, Germany." />
+    <meta property="og:image" content="https://kirantushar10.github.io/hero-bg.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-
     <script is:inline>
-      // Enable JS-driven reveal animations
       document.documentElement.classList.add('js');
+      try {
+        if (localStorage.getItem('lang') === 'zh') {
+          document.documentElement.classList.add('zh');
+        }
+      } catch (e) {}
     </script>
   </head>
 
-  <body class="bg-char text-ink font-body antialiased">
-    <!-- Full-page flow-field particle stream + amber scroll progress bar -->
-    <FlowField client:visible />
-
-    <!-- Film grain -->
-    <div class="grain-overlay" aria-hidden="true" />
-
-    <!-- Scanline overlay (subtle CRT texture) -->
-    <div class="scanline-overlay" aria-hidden="true" />
+  <body>
+    <!-- One scroll clock: progress bar, trailing glow, all parallax layers -->
+    <Cinematic client:visible />
 
     <Navbar />
 
     <main class="relative z-10">
       <!-- ============================== HERO ============================== -->
-      <section id="hero" class="relative h-[160vh]">
-        <div class="hero-frame absolute inset-0 pointer-events-none" aria-hidden="true" />
-        <HeroParallax client:visible />
+      <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+        <!-- Layer: backdrop art (parallax slow + Ken Burns inside) -->
+        <div class="absolute inset-0 pointer-events-none" data-parallax="0.15" aria-hidden="true">
+          <div class="hero-bg w-full h-full bg-cover bg-center" style="background-image: url(/hero-bg.png); filter: saturate(0.4) brightness(0.36) contrast(1.05);" />
+          <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(20,21,19,0.7) 0%, rgba(20,21,19,0.5) 45%, rgba(20,21,19,0.96) 100%);" />
+        </div>
+
+        <!-- Layer: character (parallax faster, floats) -->
+        <div class="absolute bottom-0 right-0 hidden lg:block pointer-events-none" data-parallax="0.5" aria-hidden="true">
+          <div
+            class="hero-character w-[clamp(280px,32vw,480px)] h-auto"
+            style="
+              background-image: url(/hero-character.png);
+              background-size: contain;
+              background-position: bottom center;
+              background-repeat: no-repeat;
+              mix-blend-mode: screen;
+              filter: saturate(0.8) brightness(0.95) drop-shadow(0 24px 80px rgba(217,198,164,0.18));
+              opacity: 0.92;
+            "
+          />
+        </div>
+
+        <div class="relative w-full max-w-5xl mx-auto px-6 py-28">
+          <p class="font-mono text-xs tracking-[0.22em] text-gold uppercase mb-6" data-reveal>
+            <span class="lang-en">AI/ML Engineer · Munich, Germany</span>
+            <span class="lang-zh">AI/ML 工程师 · 德国慕尼黑</span>
+          </p>
+
+          <h1
+            class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-[-0.03em] leading-[0.98]"
+            data-reveal
+          >
+            <span class="mask-line">
+              <span class="reveal-inner"><span class="lang-en">Building</span><span class="lang-zh">构建</span></span>
+            </span>
+            <span class="mask-line" style="--rd: 120ms">
+              <span class="reveal-inner"><span class="lang-en">AI Agents</span><span class="lang-zh">智能体</span> <span class="text-gold">&amp;</span> RAG</span>
+            </span>
+            <span class="mask-line" style="--rd: 240ms">
+              <span class="reveal-inner"><span class="lang-en">Pipelines</span><span class="lang-zh">检索管线</span></span>
+            </span>
+          </h1>
+
+          <div class="mt-10 grid gap-10 md:grid-cols-12 items-end" data-reveal style="--rd: 380ms">
+            <div class="md:col-span-7">
+              <p class="text-base sm:text-lg leading-relaxed text-mid max-w-xl">
+                <span class="lang-en">
+                  I architect production LLM applications, retrieval-augmented generation
+                  systems, and agentic workflows for enterprise engineering platforms.
+                </span>
+                <span class="lang-zh">
+                  我为企业级工程平台构建生产级 LLM 应用、检索增强生成系统与智能体工作流。
+                </span>
+              </p>
+              <div class="mt-8 flex flex-wrap gap-4">
+                <a href="#work" class="px-6 py-3 bg-gold text-bg text-sm font-medium rounded-lg hover:brightness-110 transition">
+                  <span class="lang-en">View Work</span>
+                  <span class="lang-zh">查看作品</span>
+                </a>
+                <a href="#contact" class="px-6 py-3 border border-rule text-mid text-sm rounded-lg hover:text-ink hover:border-gold/50 transition">
+                  <span class="lang-en">Get in Touch</span>
+                  <span class="lang-zh">联系我</span>
+                </a>
+              </div>
+            </div>
+            <div class="md:col-span-5 flex md:justify-end" data-parallax="0.08">
+              <p class="font-mono text-xs sm:text-sm text-dim">
+                [ <span class="lang-en">AI/ML Specialist · Munich, DE</span><span class="lang-zh">AI/ML 专家 · 慕尼黑</span> ]
+                <span class="caret" aria-hidden="true"></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-14 flex items-center gap-3 scroll-cue" aria-hidden="true" data-reveal style="--rd: 500ms">
+            <span class="w-px h-8 bg-gold/40"></span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">
+              <span class="lang-en">Scroll</span><span class="lang-zh">向下滚动</span>
+            </span>
+          </div>
+        </div>
       </section>
 
-      <!-- ============================== ABOUT ============================== -->
-      <section id="about" class="relative py-24 md:py-32 px-4 sm:px-6 border-t border-rule">
-        <div class="max-w-6xl mx-auto">
-          <div class="mb-12 md:mb-16 flex items-end justify-between gap-6" data-reveal>
-            <div>
-              <p class="kicker mb-3">02 — Background</p>
-              <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight">About Me</h2>
-            </div>
-            <span class="hidden md:block font-mono text-xs text-muted">§ 02</span>
+      <!-- ============================== 01 — ABOUT ============================== -->
+      <section id="about" class="py-28 md:py-40 px-6 border-t border-rule">
+        <div class="max-w-5xl mx-auto">
+          <div class="flex items-baseline gap-4 mb-12" data-reveal>
+            <span class="font-mono text-xs text-gold">01</span>
+            <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
+            <h2 class="text-xl font-semibold tracking-tight">
+              <span class="lang-en">About Me</span><span class="lang-zh">关于我</span>
+            </h2>
           </div>
 
           <div class="grid gap-12 md:grid-cols-12">
-            <!-- Pull-quote statement -->
-            <div class="md:col-span-7" data-reveal>
-              <p class="mask-line">
-                <span class="reveal-inner font-display text-2xl sm:text-3xl md:text-[2.1rem] font-medium leading-[1.25] tracking-tight text-ink">
-                  Recently completed my AI/ML engineering internship at
-                  <strong class="text-amber font-semibold">Analog Devices</strong>, where I built
-                  an AI-assisted engineering analytics platform — an intent-aware RAG pipeline
-                  over a Cytoscape.js knowledge graph, backed by FastAPI, PostgreSQL, Redis,
-                  and Apache Airflow.
+            <div class="md:col-span-7" data-parallax="0.05">
+              <p class="mask-line" data-reveal>
+                <span class="reveal-inner text-2xl sm:text-3xl md:text-[2rem] font-medium leading-[1.3] tracking-tight text-ink">
+                  <span class="lang-en">
+                    I turn messy enterprise data into reliable AI systems — RAG pipelines that
+                    answer with grounding, agents that route themselves, and the MLOps that keeps
+                    both honest.
+                  </span>
+                  <span class="lang-zh">
+                    我把杂乱的企业数据变成可靠的 AI 系统——有溯源的 RAG 管线、自主路由的智能体，以及让两者保持诚实的 MLOps。
+                  </span>
                 </span>
               </p>
-              <p class="mt-8 text-sm sm:text-base text-muted leading-relaxed max-w-xl" data-reveal style="--rd: 150ms">
-                Pursuing my <strong class="text-ink font-semibold">M.Sc. in Artificial Intelligence</strong>
-                at Brandenburg University of Technology (BTU Cottbus), Germany. Background in
-                high-throughput backend engineering on IBM z/OS mainframes and production
-                transaction processing.
+              <p class="mt-8 text-base leading-relaxed text-mid max-w-xl" data-reveal style="--rd: 160ms">
+                <span class="lang-en">
+                  I recently completed my AI/ML engineering internship at
+                  <strong class="text-ink font-semibold">Analog Devices</strong>, where I built an
+                  AI-assisted engineering analytics platform — an intent-aware RAG pipeline over a
+                  knowledge graph, backed by FastAPI, PostgreSQL, Redis, and Apache Airflow.
+                </span>
+                <span class="lang-zh">
+                  我最近完成了在 <strong class="text-ink font-semibold">Analog Devices（模拟器件）</strong>
+                  的 AI/ML 工程实习，构建了一个 AI 辅助的工程分析平台——基于知识图谱的意图感知 RAG
+                  管线，底层为 FastAPI、PostgreSQL、Redis 与 Apache Airflow。
+                </span>
               </p>
             </div>
 
-            <!-- Info rows — hairline dividers, no cards -->
-            <div class="md:col-span-5" data-reveal style="--rd: 200ms">
-              <div class="border-t border-rule py-5">
-                <h3 class="font-mono text-[11px] uppercase tracking-[0.22em] text-amber mb-2">Core Focus</h3>
-                <p class="text-sm text-muted leading-relaxed">
-                  Agentic RAG, LangGraph multi-step reasoning, Cost-aware LLM Routing, Vector DB optimization
+            <div class="md:col-span-5 space-y-6" data-reveal data-reveal="right" style="--rd: 200ms">
+              <div class="border-t border-rule pt-4">
+                <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold mb-2">
+                  <span class="lang-en">Core focus</span><span class="lang-zh">核心方向</span>
+                </h3>
+                <p class="text-sm text-mid leading-relaxed">
+                  <span class="lang-en">Agentic RAG · LangGraph reasoning · Cost-aware LLM routing · Vector search</span>
+                  <span class="lang-zh">智能体 RAG · LangGraph 推理 · 成本感知 LLM 路由 · 向量检索</span>
                 </p>
               </div>
-              <div class="border-t border-rule py-5">
-                <h3 class="font-mono text-[11px] uppercase tracking-[0.22em] text-amber mb-2">Education</h3>
-                <p class="text-sm text-muted leading-relaxed">
-                  M.Sc. Artificial Intelligence (BTU Cottbus) &amp; B.E. Information Science (SJB Institute)
+              <div class="border-t border-rule pt-4">
+                <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold mb-2">
+                  <span class="lang-en">Education</span><span class="lang-zh">教育</span>
+                </h3>
+                <p class="text-sm text-mid leading-relaxed">
+                  <span class="lang-en">M.Sc. Artificial Intelligence (BTU Cottbus) · B.E. Information Science (SJB Institute)</span>
+                  <span class="lang-zh">人工智能硕士（BTU Cottbus）· 信息科学学士（SJB 学院）</span>
                 </p>
               </div>
-              <div class="border-y border-rule py-5">
-                <h3 class="font-mono text-[11px] uppercase tracking-[0.22em] text-amber mb-2">Location</h3>
-                <p class="text-sm text-muted leading-relaxed">
-                  Munich, Germany · Open to AI Research &amp; Engineering collaborations
+              <div class="border-y border-rule py-4">
+                <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold mb-2">
+                  <span class="lang-en">Location</span><span class="lang-zh">所在地</span>
+                </h3>
+                <p class="text-sm text-mid leading-relaxed">
+                  <span class="lang-en">Munich, Germany · Open to AI engineering collaborations</span>
+                  <span class="lang-zh">德国慕尼黑 · 欢迎 AI 工程方向的合作</span>
                 </p>
               </div>
             </div>
@@ -248,46 +203,48 @@ const skillsLanguages = ['Python', 'TypeScript', 'JavaScript', 'SQL', 'TensorFlo
         </div>
       </section>
 
-      <!-- ============================== EXPERIENCE ============================== -->
-      <section id="experience" class="relative py-24 md:py-32 px-4 sm:px-6 border-t border-rule">
-        <div class="max-w-5xl mx-auto">
-          <div class="mb-12 md:mb-16 flex items-end justify-between gap-6" data-reveal>
-            <div>
-              <p class="kicker mb-3">03 — Career</p>
-              <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight">Work Experience</h2>
-            </div>
-            <span class="hidden md:block font-mono text-xs text-muted">§ 03</span>
+      <!-- ============================== 02 — EXPERIENCE ============================== -->
+      <section id="experience" class="py-28 md:py-40 px-6 border-t border-rule">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex items-baseline gap-4 mb-14" data-reveal>
+            <span class="font-mono text-xs text-gold">02</span>
+            <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
+            <h2 class="text-xl font-semibold tracking-tight">
+              <span class="lang-en">Work Experience</span><span class="lang-zh">工作经历</span>
+            </h2>
           </div>
 
-          <div class="relative">
-            <!-- Scroll-drawn amber spine -->
-            <div class="absolute left-0 top-0 h-full" aria-hidden="true">
-              <TimelineLine client:load />
-            </div>
+          <div class="relative pl-8 sm:pl-12">
+            <!-- Hairline rail + scroll-drawn gold spine -->
+            <div class="tl-rail" aria-hidden="true"></div>
+            <TimelineLine client:visible />
 
-            <div class="space-y-14 md:space-y-20 pl-8 sm:pl-12">
+            <div class="space-y-14 md:space-y-16">
               {experiences.map((exp, i) => (
                 <div class="relative" data-reveal style={`--rd: ${i * 90}ms`}>
-                  <!-- Amber node on the spine -->
-                  <span
-                    class="absolute top-2 -left-[37px] sm:-left-[53px] w-3 h-3 rounded-full bg-amber shadow-[0_0_12px_rgba(255,176,0,0.7)]"
-                    aria-hidden="true"
-                  />
+                  <span class="tl-node" aria-hidden="true" />
                   <div class="border-t border-rule pt-5">
-                    <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 mb-3">
-                      <h3 class="font-display text-xl md:text-2xl font-semibold tracking-tight text-ink">
-                        {exp.role}
+                    <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 mb-2">
+                      <h3 class="text-xl md:text-2xl font-semibold tracking-tight">
+                        <span class="lang-en">{exp.role.en}</span>
+                        <span class="lang-zh">{exp.role.zh}</span>
                       </h3>
-                      <span class="font-mono text-xs text-amber whitespace-nowrap">{exp.period}</span>
+                      <span class="font-mono text-xs text-gold whitespace-nowrap">{exp.period}</span>
                     </div>
-                    <p class="text-xs sm:text-sm font-medium text-muted mb-4">
-                      {exp.company} · <span class="text-muted/70">{exp.location}</span>
+                    <p class="text-sm text-dim mb-4">
+                      {exp.company} · <span class="lang-en">{exp.location.en}</span><span class="lang-zh">{exp.location.zh}</span>
                     </p>
-                    <ul class="space-y-2.5 text-sm text-ink/75">
-                      {exp.bullets.map((bullet) => (
-                        <li class="flex items-start gap-3 leading-relaxed">
-                          <span class="text-amber mt-px text-xs shrink-0" aria-hidden="true">▸</span>
-                          <span>{bullet}</span>
+                    <ul class="space-y-2.5 text-[15px] text-mid leading-relaxed">
+                      {exp.bullets.en.map((b) => (
+                        <li class="lang-en flex items-start gap-3">
+                          <span class="text-gold mt-px text-xs shrink-0" aria-hidden="true">▸</span>
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                      {exp.bullets.zh.map((b) => (
+                        <li class="lang-zh flex items-start gap-3">
+                          <span class="text-gold mt-px text-xs shrink-0" aria-hidden="true">▸</span>
+                          <span>{b}</span>
                         </li>
                       ))}
                     </ul>
@@ -299,211 +256,195 @@ const skillsLanguages = ['Python', 'TypeScript', 'JavaScript', 'SQL', 'TensorFlo
         </div>
       </section>
 
-      <!-- ============================== SKILLS ============================== -->
-      <section id="skills" class="relative py-24 md:py-32 px-4 sm:px-6 border-t border-rule">
-        <div class="max-w-6xl mx-auto">
-          <div class="mb-12 md:mb-16 flex items-end justify-between gap-6" data-reveal>
-            <div>
-              <p class="kicker mb-3">04 — Stack</p>
-              <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight">Technical Matrix</h2>
-            </div>
-            <span class="hidden md:block font-mono text-xs text-muted">§ 04</span>
+      <!-- ============================== 03 — SKILLS ============================== -->
+      <section id="skills" class="py-28 md:py-40 px-6 border-t border-rule">
+        <div class="max-w-5xl mx-auto">
+          <div class="flex items-baseline gap-4 mb-14" data-reveal>
+            <span class="font-mono text-xs text-gold">03</span>
+            <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
+            <h2 class="text-xl font-semibold tracking-tight">
+              <span class="lang-en">Skills</span><span class="lang-zh">技能</span>
+            </h2>
           </div>
 
           <div class="space-y-12">
-            <div data-reveal>
-              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-5">
-                <span class="text-amber" aria-hidden="true">—</span> Generative AI &amp; LLMs
-              </p>
-              <div class="marquee">
-                <div class="marquee-track">
-                  <div class="marquee-chips">
-                    {skillsGenerativeAI.map((s) => (
-                      <SkillBadge name={s} level="expert" category="ai" />
-                    ))}
-                  </div>
-                  <div class="marquee-chips marquee-dup" aria-hidden="true">
-                    {skillsGenerativeAI.map((s) => (
-                      <SkillBadge name={s} level="expert" category="ai" />
-                    ))}
-                  </div>
+            {skillGroups.map((g, i) => (
+              <div data-reveal style={`--rd: ${i * 80}ms`} data-parallax={i % 2 === 0 ? '0.03' : '-0.03'}>
+                <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-dim mb-5">
+                  <span class="text-gold" aria-hidden="true">—</span>
+                  <span class="lang-en">{g.label.en}</span><span class="lang-zh">{g.label.zh}</span>
+                </h3>
+                <div class="flex flex-wrap gap-2.5">
+                  {g.items.map((s) => (
+                    <span class="chip">{s}</span>
+                  ))}
                 </div>
               </div>
-            </div>
-
-            <div data-reveal style="--rd: 100ms">
-              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-5">
-                <span class="text-amber" aria-hidden="true">—</span> Backend &amp; MLOps
-              </p>
-              <div class="marquee marquee-reverse marquee-fast">
-                <div class="marquee-track">
-                  <div class="marquee-chips">
-                    {skillsBackendMLOps.map((s) => (
-                      <SkillBadge name={s} level="expert" category="backend" />
-                    ))}
-                  </div>
-                  <div class="marquee-chips marquee-dup" aria-hidden="true">
-                    {skillsBackendMLOps.map((s) => (
-                      <SkillBadge name={s} level="expert" category="backend" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div data-reveal style="--rd: 200ms">
-              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-5">
-                <span class="text-amber" aria-hidden="true">—</span> Databases &amp; Vector Search
-              </p>
-              <div class="marquee">
-                <div class="marquee-track">
-                  <div class="marquee-chips">
-                    {skillsDatabases.map((s) => (
-                      <SkillBadge name={s} level="proficient" category="database" />
-                    ))}
-                  </div>
-                  <div class="marquee-chips marquee-dup" aria-hidden="true">
-                    {skillsDatabases.map((s) => (
-                      <SkillBadge name={s} level="proficient" category="database" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div data-reveal style="--rd: 300ms">
-              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-5">
-                <span class="text-amber" aria-hidden="true">—</span> Languages &amp; Deep Learning
-              </p>
-              <div class="marquee marquee-reverse marquee-fast">
-                <div class="marquee-track">
-                  <div class="marquee-chips">
-                    {skillsLanguages.map((s) => (
-                      <SkillBadge name={s} level="expert" category="language" />
-                    ))}
-                  </div>
-                  <div class="marquee-chips marquee-dup" aria-hidden="true">
-                    {skillsLanguages.map((s) => (
-                      <SkillBadge name={s} level="expert" category="language" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================== PROJECTS ============================== -->
-      <section id="projects" class="relative py-24 md:py-32 px-4 sm:px-6 border-t border-rule">
-        <div class="max-w-6xl mx-auto">
-          <div class="mb-12 md:mb-16 flex items-end justify-between gap-6" data-reveal>
-            <div>
-              <p class="kicker mb-3">05 — Portfolio</p>
-              <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight">
-                Featured AI &amp; MLOps Projects
-              </h2>
-              <p class="mt-3 text-sm text-muted">Production applications, RAG pipelines, and agentic workflows</p>
-            </div>
-            <span class="hidden md:block font-mono text-xs text-muted">§ 05</span>
-          </div>
-
-          <div class="border-b border-rule">
-            {featuredProjects.map((proj, i) => (
-              <ProjectCard
-                client:visible
-                title={proj.title}
-                description={proj.description}
-                tags={proj.tags}
-                featured={proj.featured}
-                githubUrl={proj.githubUrl}
-                index={i}
-              />
             ))}
           </div>
         </div>
       </section>
 
-      <!-- ============================== EDUCATION ============================== -->
-      <section id="education" class="relative py-24 md:py-32 px-4 sm:px-6 border-t border-rule">
+      <!-- ============================== 04 — PROJECTS ============================== -->
+      <section id="work" class="py-28 md:py-40 px-6 border-t border-rule">
         <div class="max-w-5xl mx-auto">
-          <div class="mb-12 md:mb-16 flex items-end justify-between gap-6" data-reveal>
-            <div>
-              <p class="kicker mb-3">06 — Credentials</p>
-              <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight">Education</h2>
-            </div>
-            <span class="hidden md:block font-mono text-xs text-muted">§ 06</span>
+          <div class="flex items-baseline gap-4 mb-6" data-reveal>
+            <span class="font-mono text-xs text-gold">04</span>
+            <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
+            <h2 class="text-xl font-semibold tracking-tight">
+              <span class="lang-en">Projects</span><span class="lang-zh">项目</span>
+            </h2>
+          </div>
+          <p class="text-sm text-dim mb-12" data-reveal style="--rd: 100ms">
+            <span class="lang-en">Case studies first — deep dives into the systems I shipped. Then the rest of the build list.</span>
+            <span class="lang-zh">先展示案例研究——深入我交付的系统；其余项目随后列出。</span>
+          </p>
+
+          <!-- Case studies (full detail pages) -->
+          <div class="space-y-1.5 mb-20">
+            {caseStudies.map((cs, i) => (
+              <article class="work-row relative rounded-xl overflow-hidden" data-reveal style={`--rd: ${i * 90}ms`}>
+                <a href={`/work/${cs.slug}/`} class="block px-5 py-7 sm:px-7 sm:py-9">
+                  <div class="flex items-center gap-3 mb-3">
+                    <span class="font-mono text-xs text-dim">{cs.index}</span>
+                    <span class="font-mono text-xs text-gold">{cs.year}</span>
+                    <span class="font-mono text-xs text-dim">
+                      · <span class="lang-en">{cs.role.en}</span><span class="lang-zh">{cs.role.zh}</span>
+                    </span>
+                  </div>
+                  <h3 class="work-title text-xl sm:text-2xl font-semibold tracking-tight flex items-center gap-3">
+                    <span class="lang-en">{cs.title.en}</span>
+                    <span class="lang-zh">{cs.title.zh}</span>
+                    <span class="work-arrow text-gold" aria-hidden="true">↗</span>
+                  </h3>
+                  <p class="mt-2 text-sm sm:text-[15px] text-mid leading-relaxed max-w-2xl">
+                    <span class="lang-en">{cs.summary.en}</span>
+                    <span class="lang-zh">{cs.summary.zh}</span>
+                  </p>
+                </a>
+                <span class="work-underline" aria-hidden="true"></span>
+              </article>
+            ))}
           </div>
 
-          <div class="grid gap-x-12 md:grid-cols-2">
-            <div class="border-t border-rule py-8" data-reveal>
-              <span class="font-mono text-xs text-amber">OCT 2024 – SEP 2027</span>
-              <h3 class="font-display text-xl md:text-2xl font-semibold tracking-tight mt-4">
-                M.Sc. Artificial Intelligence
-              </h3>
-              <p class="text-sm font-medium text-ink mt-2">
-                Brandenburg University of Technology (BTU Cottbus)
-              </p>
-              <p class="text-xs text-muted mt-2.5 leading-relaxed">
-                Cottbus, Germany
-              </p>
-            </div>
-            <div class="border-t border-rule py-8 mt-8 md:mt-0" data-reveal style="--rd: 120ms">
-              <span class="font-mono text-xs text-amber">AUG 2018 – JUL 2022</span>
-              <h3 class="font-display text-xl md:text-2xl font-semibold tracking-tight mt-4">
-                B.E. Information Science &amp; Engineering
-              </h3>
-              <p class="text-sm font-medium text-ink mt-2">SJB Institute of Technology</p>
-              <p class="text-xs text-muted mt-2.5 leading-relaxed">
-                Bengaluru, India
-              </p>
-            </div>
+          <!-- More projects grid -->
+          <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-dim mb-6" data-reveal>
+            <span class="text-gold" aria-hidden="true">—</span>
+            <span class="lang-en">More builds</span><span class="lang-zh">更多项目</span>
+          </h3>
+          <div class="grid gap-1.5 sm:grid-cols-2">
+            {projects.map((p, i) => (
+              <article class="work-row relative rounded-xl overflow-hidden" data-reveal style={`--rd: ${(i % 2) * 80}ms`}>
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" class="block px-5 py-6">
+                  <div class="flex items-center justify-between gap-3">
+                    <h4 class="work-title text-base font-semibold tracking-tight">{p.title}</h4>
+                    <span class="flex items-center gap-3">
+                      <span class="font-mono text-[11px] text-dim">{p.year}</span>
+                      <span class="work-arrow text-gold" aria-hidden="true">↗</span>
+                    </span>
+                  </div>
+                  <p class="mt-2 text-[13.5px] text-mid leading-relaxed">
+                    <span class="lang-en">{p.description.en}</span>
+                    <span class="lang-zh">{p.description.zh}</span>
+                  </p>
+                  <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+                    {p.tags.map((t) => (
+                      <span class="font-mono text-[11px] text-dim">{t}</span>
+                    ))}
+                  </div>
+                </a>
+                <span class="work-underline" aria-hidden="true"></span>
+              </article>
+            ))}
           </div>
-          <div class="border-t border-rule -mx-0" aria-hidden="true" />
         </div>
       </section>
 
-      <!-- ============================== CONTACT ============================== -->
-      <section id="contact" class="relative py-28 md:py-40 px-4 sm:px-6 border-t border-rule">
-        <div class="max-w-6xl mx-auto">
-          <p class="kicker mb-8" data-reveal>07 — Contact</p>
+      <!-- ============================== 05 — EDUCATION ============================== -->
+      <section id="education" class="py-28 md:py-40 px-6 border-t border-rule">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex items-baseline gap-4 mb-14" data-reveal>
+            <span class="font-mono text-xs text-gold">05</span>
+            <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
+            <h2 class="text-xl font-semibold tracking-tight">
+              <span class="lang-en">Education</span><span class="lang-zh">教育</span>
+            </h2>
+          </div>
 
-          <h2 class="font-display font-bold tracking-[-0.02em] leading-[1.04] text-4xl sm:text-6xl md:text-7xl" data-reveal style="--rd: 80ms">
-            <span class="mask-line"><span class="reveal-inner">Let&apos;s Build</span></span>
-            <span class="mask-line" style="--rd: 180ms">
-              <span class="reveal-inner">Something <span class="text-amber">Exceptional</span></span>
+          <div class="grid gap-x-12 md:grid-cols-2">
+            <div class="border-t border-rule py-8" data-reveal data-reveal="left">
+              <span class="font-mono text-xs text-gold">2024 – 2027</span>
+              <h3 class="text-xl md:text-2xl font-semibold tracking-tight mt-4">M.Sc. Artificial Intelligence</h3>
+              <p class="text-sm text-mid mt-2">
+                Brandenburg University of Technology
+                <span class="text-dim"> · Cottbus, Germany</span>
+              </p>
+            </div>
+            <div class="border-t border-rule py-8 mt-8 md:mt-0" data-reveal data-reveal="right" style="--rd: 120ms">
+              <span class="font-mono text-xs text-gold">2018 – 2022</span>
+              <h3 class="text-xl md:text-2xl font-semibold tracking-tight mt-4">B.E. Information Science &amp; Engineering</h3>
+              <p class="text-sm text-mid mt-2">
+                SJB Institute of Technology
+                <span class="text-dim"> · Bengaluru, India</span>
+              </p>
+            </div>
+          </div>
+          <div class="border-t border-rule" aria-hidden="true" />
+        </div>
+      </section>
+
+      <!-- ============================== 06 — CONTACT ============================== -->
+      <section id="contact" class="py-32 md:py-44 px-6 border-t border-rule">
+        <div class="max-w-5xl mx-auto">
+          <div class="flex items-baseline gap-4 mb-12" data-reveal>
+            <span class="font-mono text-xs text-gold">06</span>
+            <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-dim">
+              <span class="lang-en">Contact</span><span class="lang-zh">联系</span>
+            </span>
+          </div>
+
+          <h2 class="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.02em] leading-[1.04]" data-reveal>
+            <span class="mask-line">
+              <span class="reveal-inner"><span class="lang-en">Let's build</span><span class="lang-zh">一起</span></span>
+            </span>
+            <span class="mask-line" style="--rd: 150ms">
+              <span class="reveal-inner"><span class="lang-en">something</span><span class="lang-zh">构建</span> <span class="text-gold"><span class="lang-en">exceptional</span><span class="lang-zh">非凡的东西</span></span></span>
             </span>
           </h2>
 
-          <p class="mt-8 max-w-xl text-sm sm:text-base text-muted leading-relaxed" data-reveal style="--rd: 240ms">
-            Interested in production AI agents, intent-aware RAG pipelines, or enterprise MLOps
-            architectures? Let&apos;s connect.
+          <p class="mt-8 text-base text-mid leading-relaxed max-w-xl" data-reveal style="--rd: 300ms">
+            <span class="lang-en">
+              Working on production AI agents, RAG pipelines, or enterprise MLOps? Let's talk.
+            </span>
+            <span class="lang-zh">正在做生产级 AI 智能体、RAG 管线或企业级 MLOps？欢迎交流。</span>
           </p>
 
-          <div class="mt-14" data-reveal style="--rd: 320ms">
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-5">
-              <span class="text-amber" aria-hidden="true">→</span> Get in Touch
+          <div class="mt-14" data-reveal style="--rd: 380ms">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-dim mb-5">
+              <span class="text-gold" aria-hidden="true">→</span>
+              <span class="lang-en">Get in touch</span><span class="lang-zh">联系方式</span>
             </p>
-            <a href="mailto:kirantushar10@gmail.com" class="big-link font-display font-semibold tracking-tight text-2xl sm:text-4xl md:text-5xl break-all">
+            <a href="mailto:kirantushar10@gmail.com" class="big-link text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight break-all">
               kirantushar10@gmail.com
             </a>
-            <p class="mt-7 font-mono text-xs sm:text-sm text-muted">
-              → kirantushar10@gmail.com<span class="caret" aria-hidden="true" />
+            <p class="mt-7 font-mono text-xs sm:text-sm text-dim">
+              → kirantushar10@gmail.com<span class="caret" aria-hidden="true"></span>
             </p>
-            <div class="mt-10 flex flex-wrap gap-4">
+            <div class="mt-10 flex flex-wrap gap-3">
               <a
                 href="https://github.com/kirantushar10"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center gap-2 px-7 py-3.5 border border-rule text-ink font-mono text-xs uppercase tracking-[0.18em] hover:border-amber-dim hover:text-amber transition-colors duration-300"
+                class="px-5 py-2.5 border border-rule text-sm text-mid rounded-lg hover:text-ink hover:border-gold/50 transition"
               >
-                GitHub Profile ↗
+                GitHub ↗
               </a>
               <a
                 href="https://linkedin.com/in/kirantushar10"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center gap-2 px-7 py-3.5 border border-rule text-ink font-mono text-xs uppercase tracking-[0.18em] hover:border-amber-dim hover:text-amber transition-colors duration-300"
+                class="px-5 py-2.5 border border-rule text-sm text-mid rounded-lg hover:text-ink hover:border-gold/50 transition"
               >
                 LinkedIn ↗
               </a>
@@ -515,19 +456,41 @@ const skillsLanguages = ['Python', 'TypeScript', 'JavaScript', 'SQL', 'TensorFlo
 
     <Footer />
 
-    <!-- IntersectionObserver to trigger scroll reveals (.in) -->
     <script is:inline>
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      // Scroll reveals
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
 
-      document.querySelectorAll('[data-reveal]').forEach((el) => {
-        observer.observe(el);
+      // Nav hairline after scrolling
+      const nav = document.getElementById('site-nav');
+      if (nav) {
+        const onScroll = () => nav.classList.toggle('nav-scrolled', window.scrollY > 60);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+
+      // Language toggle
+      document.querySelectorAll('.lang-toggle button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const isZh = btn.dataset.lang === 'zh';
+          document.documentElement.classList.toggle('zh', isZh);
+          document.querySelectorAll('.lang-toggle button').forEach((b) =>
+            b.classList.toggle('active', b === btn)
+          );
+          try {
+            localStorage.setItem('lang', isZh ? 'zh' : 'en');
+          } catch (e) {}
+        });
       });
     </script>
   </body>

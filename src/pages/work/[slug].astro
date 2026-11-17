@@ -1,0 +1,194 @@
+---
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/globals.css';
+import { caseStudies } from '../../data/work';
+
+export function getStaticPaths() {
+  return caseStudies.map((cs) => ({ params: { slug: cs.slug }, props: { cs } }));
+}
+
+const { cs } = Astro.props;
+const idx = caseStudies.indexOf(cs);
+const next = caseStudies[(idx + 1) % caseStudies.length];
+---
+
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{cs.title.en} — Tushar Kiran</title>
+    <meta name="description" content={cs.summary.en} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={cs.title.en} />
+    <meta property="og:description" content={cs.summary.en} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      try {
+        if (localStorage.getItem('lang') === 'zh') document.documentElement.classList.add('zh');
+      } catch (e) {}
+    </script>
+  </head>
+
+  <body>
+    <Navbar />
+
+    <main class="relative z-10">
+      <article class="max-w-3xl mx-auto px-6 pt-32 pb-24 cs-prose">
+        <!-- Breadcrumb -->
+        <p class="font-mono text-xs text-dim mb-10" data-reveal>
+          <a href="/" class="hover:text-ink transition">
+            <span class="lang-en">← All work</span>
+            <span class="lang-zh">← 全部作品</span>
+          </a>
+          <span class="mx-3">/</span>{cs.index}
+        </p>
+
+        <p class="font-mono text-xs tracking-[0.2em] uppercase text-gold mb-5" data-reveal>
+          {cs.year} · <span class="lang-en">{cs.role.en}</span><span class="lang-zh">{cs.role.zh}</span>
+        </p>
+        <h1 class="text-3xl sm:text-5xl font-semibold tracking-tight leading-[1.08]" data-reveal style="--rd: 80ms">
+          <span class="lang-en">{cs.title.en}</span>
+          <span class="lang-zh">{cs.title.zh}</span>
+        </h1>
+        <p class="mt-6 text-lg text-mid leading-relaxed" data-reveal style="--rd: 160ms">
+          <span class="lang-en">{cs.summary.en}</span>
+          <span class="lang-zh">{cs.summary.zh}</span>
+        </p>
+
+        <!-- Stack chips -->
+        <div class="mt-8 flex flex-wrap gap-2" data-reveal style="--rd: 220ms">
+          {cs.stack.map((s) => (
+            <span class="chip">{s}</span>
+          ))}
+        </div>
+
+        <hr class="border-rule my-12" />
+
+        <!-- Overview -->
+        <h3 data-reveal>
+          <span class="lang-en">Overview</span>
+          <span class="lang-zh">概述</span>
+        </h3>
+        <p data-reveal>
+          <span class="lang-en">{cs.overview.en}</span>
+          <span class="lang-zh">{cs.overview.zh}</span>
+        </p>
+
+        <!-- Challenge -->
+        <h3 class="mt-12" data-reveal>
+          <span class="lang-en">The Challenge</span>
+          <span class="lang-zh">挑战</span>
+        </h3>
+        <p data-reveal>
+          <span class="lang-en">{cs.challenge.en}</span>
+          <span class="lang-zh">{cs.challenge.zh}</span>
+        </p>
+
+        <!-- Approach -->
+        <h3 class="mt-12" data-reveal>
+          <span class="lang-en">Approach</span>
+          <span class="lang-zh">方法</span>
+        </h3>
+        <ul class="mt-4 space-y-3" data-reveal>
+          {cs.approach.map((a) => (
+            <li class="flex items-start gap-3">
+              <span class="text-gold mt-px shrink-0" aria-hidden="true">→</span>
+              <span>{a}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Outcome -->
+        <h3 class="mt-12" data-reveal>
+          <span class="lang-en">Outcome</span>
+          <span class="lang-zh">成果</span>
+        </h3>
+        <p data-reveal>
+          <span class="lang-en">{cs.outcome.en}</span>
+          <span class="lang-zh">{cs.outcome.zh}</span>
+        </p>
+
+        <!-- Repo link -->
+        <div class="mt-12 flex flex-wrap gap-3" data-reveal>
+          <a
+            href={cs.githubUrl}
+            target="_blank"
+            rel="noopener"
+            class="px-5 py-2.5 bg-gold text-bg text-sm font-medium rounded-lg hover:brightness-110 transition"
+          >
+            <span class="lang-en">View on GitHub ↗</span>
+            <span class="lang-zh">在 GitHub 查看 ↗</span>
+          </a>
+          <a
+            href="/"
+            class="px-5 py-2.5 border border-rule text-sm text-mid rounded-lg hover:text-ink hover:border-gold/50 transition"
+          >
+            <span class="lang-en">← All work</span>
+            <span class="lang-zh">← 全部作品</span>
+          </a>
+        </div>
+
+        <!-- Next case study -->
+        <div class="mt-16 border-t border-rule pt-6">
+          <p class="font-mono text-xs text-dim mb-2">
+            <span class="lang-en">Next case study</span>
+            <span class="lang-zh">下一个案例</span>
+          </p>
+          <a
+            href={`/work/${next.slug}/`}
+            class="text-xl font-semibold tracking-tight hover:text-gold transition"
+          >
+            <span class="lang-en">{next.title.en} ↗</span>
+            <span class="lang-zh">{next.title.zh} ↗</span>
+          </a>
+        </div>
+      </article>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+
+      const nav = document.getElementById('site-nav');
+      if (nav) {
+        const onScroll = () => nav.classList.toggle('nav-scrolled', window.scrollY > 60);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+
+      document.querySelectorAll('.lang-toggle button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const isZh = btn.dataset.lang === 'zh';
+          document.documentElement.classList.toggle('zh', isZh);
+          document.querySelectorAll('.lang-toggle button').forEach((b) =>
+            b.classList.toggle('active', b === btn)
+          );
+          try {
+            localStorage.setItem('lang', isZh ? 'zh' : 'en');
+          } catch (e) {}
+        });
+      });
+    </script>
+  </body>
+</html>
