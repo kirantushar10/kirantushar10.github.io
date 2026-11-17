@@ -2,6 +2,8 @@
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import Cinematic from '../components/Cinematic';
+import HeroReframe from '../components/HeroReframe';
+import HeroContent from '../components/HeroContent';
 import TimelineLine from '../components/TimelineLine';
 import '../styles/globals.css';
 import { caseStudies, projects, experiences, skillGroups } from '../data/work';
@@ -37,6 +39,8 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
   <body>
     <!-- One scroll clock: progress bar, trailing glow, all parallax layers -->
     <Cinematic client:visible />
+    <!-- Signature moment: hero scrolls out into the RAG pipeline -->
+    <HeroReframe client:visible />
 
     <Navbar />
 
@@ -44,13 +48,13 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
       <!-- ============================== HERO ============================== -->
       <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
         <!-- Layer: backdrop art (parallax slow + Ken Burns inside) -->
-        <div class="absolute inset-0 pointer-events-none" data-parallax="0.15" aria-hidden="true">
+        <div class="absolute inset-0 pointer-events-none" data-parallax="0.15" data-hero-backdrop aria-hidden="true">
           <div class="hero-bg w-full h-full bg-cover bg-center" style="background-image: url(/hero-bg.png); filter: saturate(0.4) brightness(0.36) contrast(1.05);" />
           <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(20,21,19,0.7) 0%, rgba(20,21,19,0.5) 45%, rgba(20,21,19,0.96) 100%);" />
         </div>
 
         <!-- Layer: character (parallax faster, floats) -->
-        <div class="absolute bottom-0 right-0 hidden lg:block pointer-events-none" data-parallax="0.5" aria-hidden="true">
+        <div class="absolute bottom-0 right-0 hidden lg:block pointer-events-none" data-hero-character aria-hidden="true">
           <div
             class="hero-character w-[clamp(280px,32vw,480px)] h-auto"
             style="
@@ -65,56 +69,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           />
         </div>
 
-        <div class="relative w-full max-w-5xl mx-auto px-6 py-28">
-          <p class="font-mono text-xs tracking-[0.22em] text-gold uppercase mb-6" data-reveal>
-            AI/ML Engineer · Munich, Germany
-          </p>
-
-          <h1
-            class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-[-0.03em] leading-[0.98]"
-            data-reveal
-          >
-            <span class="mask-line">
-              <span class="reveal-inner">Building</span>
-            </span>
-            <span class="mask-line" style="--rd: 120ms">
-              <span class="reveal-inner">AI Agents <span class="text-gold">&amp;</span> RAG</span>
-            </span>
-            <span class="mask-line" style="--rd: 240ms">
-              <span class="reveal-inner">Pipelines</span>
-            </span>
-          </h1>
-
-          <div class="mt-10 grid gap-10 md:grid-cols-12 items-end" data-reveal style="--rd: 380ms">
-            <div class="md:col-span-7">
-              <p class="text-base sm:text-lg leading-relaxed text-mid max-w-xl">
-                I architect production LLM applications, retrieval-augmented generation
-                systems, and agentic workflows for enterprise engineering platforms.
-              </p>
-              <div class="mt-8 flex flex-wrap gap-4">
-                <a href="#work" class="px-6 py-3 bg-gold text-bg text-sm font-medium rounded-lg hover:brightness-110 transition">
-                  View Work
-                </a>
-                <a href="#contact" class="px-6 py-3 border border-rule text-mid text-sm rounded-lg hover:text-ink hover:border-gold/50 transition">
-                  Get in Touch
-                </a>
-              </div>
-            </div>
-            <div class="md:col-span-5 flex md:justify-end" data-parallax="0.08">
-              <p class="font-mono text-xs sm:text-sm text-dim">
-                [ AI/ML Specialist · Munich, DE ]
-                <span class="caret" aria-hidden="true"></span>
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-14 flex items-center gap-3 scroll-cue" aria-hidden="true" data-reveal style="--rd: 500ms">
-            <span class="w-px h-8 bg-gold/40"></span>
-            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">
-              Scroll
-            </span>
-          </div>
-        </div>
+        <HeroContent client:load />
       </section>
 
       <!-- ============================== 01 — ABOUT ============================== -->

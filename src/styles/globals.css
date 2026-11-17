@@ -65,23 +65,40 @@
     animation: gridDrift 26s linear infinite;
   }
 
-  /* Soft radial glow that follows the vertical scroll position */
+  /* Soft aurora mesh — three slow gold/amber blobs. Kept in the
+     single warm accent channel so it reads as atmosphere, not
+     rainbow neon. Low opacity; never competes with content. */
   body::after {
     content: "";
     position: fixed;
-    left: 50%;
-    top: 30vh;
-    width: 900px;
-    height: 900px;
-    transform: translateX(-50%);
-    background: radial-gradient(
-      circle,
-      rgba(217, 198, 164, 0.06),
-      transparent 62%
-    );
+    inset: 0;
     z-index: 0;
     pointer-events: none;
-    will-change: transform;
+    background:
+      radial-gradient(ellipse 70% 50% at 18% 22%, rgba(217, 198, 164, 0.055), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 82% 68%, rgba(217, 198, 164, 0.045), transparent 62%),
+      radial-gradient(ellipse 50% 40% at 50% 88%, rgba(217, 198, 164, 0.040), transparent 60%);
+    animation: auroraDrift 34s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
+  }
+
+  /* Soft aurora mesh — three slow gold/amber blobs. Kept in the
+     single warm accent channel so it reads as atmosphere, not
+     rainbow neon. Low opacity; never competes with content.
+     (The scroll-following radial glow is rendered by Cinematic.tsx
+     as a real DOM element, so it doesn't need this pseudo.) */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 50% at 18% 22%, rgba(217, 198, 164, 0.055), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 82% 68%, rgba(217, 198, 164, 0.045), transparent 62%),
+      radial-gradient(ellipse 50% 40% at 50% 88%, rgba(217, 198, 164, 0.040), transparent 60%);
+    animation: auroraDrift 34s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
   }
 
   @keyframes gridDrift {
@@ -94,6 +111,21 @@
       background-position:
         64px 64px,
         64px 64px;
+    }
+  }
+
+  @keyframes auroraDrift {
+    from {
+      background-position:
+        18% 22%,
+        82% 68%,
+        50% 88%;
+    }
+    to {
+      background-position:
+        24% 18%,
+        78% 72%,
+        52% 92%;
     }
   }
 
@@ -210,6 +242,7 @@
 
 .hero-character {
   will-change: transform, opacity;
+  transition: transform 0.18s linear;
 }
 
 .caret {
@@ -245,16 +278,18 @@
 /* ============================================================
    Scroll reveal — .js gate keeps no-JS fully readable.
    Variants: fade-up (default), fade, left, right, scale.
+   500ms expo-out — the premium deceleration curve, per the
+   animate skill's scroll-reveal spec (max 600ms).
    ============================================================ */
 [data-reveal] {
   transition:
-    opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1),
-    transform 0.85s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--rd, 0ms);
 }
 .js [data-reveal]:not(.in) {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(24px);
 }
 .js [data-reveal][data-reveal="left"]:not(.in) {
   transform: translateX(-32px);
@@ -297,16 +332,19 @@
 
 /* ============================================================
    Work rows (case studies + projects + writing)
+   200ms expo-out lift + gold-tinted shadow — animate card spec.
    ============================================================ */
 .work-row {
   transition:
-    background-color 0.3s ease,
-    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    background-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s ease;
 }
 .work-row:hover,
 .work-row:focus-within {
   background-color: var(--color-card);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(217, 198, 164, 0.10), 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 .work-row .work-title {
   transition: color 0.3s ease;
@@ -469,8 +507,19 @@
 
 /* ============================================================
    Reduced motion — everything readable, nothing animates
+   Universal gate first (animate skill mandates this exact block);
+   per-class overrides below fine-tune what each element does.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
   html {
     scroll-behavior: auto;
   }

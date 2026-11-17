@@ -62,8 +62,11 @@ export default function Cinematic() {
         if (!l.depth) continue;
         const elCenter = l.top + l.height / 2;
         const offset = center - elCenter; // px from viewport center
-        const ty = offset * l.depth * -0.1; // drift opposite to scroll, scaled
-        l.el.style.transform = `translate3d(0, ${ty.toFixed(2)}px, 0)`;
+        // Vertical drift: foreground layers move opposite to scroll.
+        // Horizontal drift: sideways shear makes the depth read at a glance.
+        const ty = offset * l.depth * -0.35;
+        const tx = offset * l.depth * 0.08;
+        l.el.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0)`;
       }
     };
 
