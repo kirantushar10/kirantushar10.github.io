@@ -124,15 +124,15 @@
 }
 
 /* ============================================================
-   Bilingual toggle — EN shown by default, .zh swaps
+   Bilingual toggle — EN shown by default, .de swaps
    ============================================================ */
-.lang-zh {
+.lang-de {
   display: none;
 }
-html.zh .lang-en {
+html.de .lang-en {
   display: none;
 }
-html.zh .lang-zh {
+html.de .lang-de {
   display: inline-block;
 }
 
