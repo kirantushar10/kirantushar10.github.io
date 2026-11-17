@@ -47,8 +47,8 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
     <main class="relative z-10">
       <!-- ============================== HERO ============================== -->
       <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
-        <!-- Layer: backdrop art (parallax slow + Ken Burns inside) -->
-        <div class="absolute inset-0 pointer-events-none" data-parallax="0.15" data-hero-backdrop aria-hidden="true">
+        <!-- Layer: backdrop art (Ken Burns inside; HeroReframe owns the scroll transform) -->
+        <div class="absolute inset-0 pointer-events-none" data-hero-backdrop aria-hidden="true">
           <div class="hero-bg w-full h-full bg-cover bg-center" style="background-image: url(/hero-bg.png); filter: saturate(0.4) brightness(0.36) contrast(1.05);" />
           <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(20,21,19,0.7) 0%, rgba(20,21,19,0.5) 45%, rgba(20,21,19,0.96) 100%);" />
         </div>
