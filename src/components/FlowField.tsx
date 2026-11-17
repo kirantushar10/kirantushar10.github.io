@@ -15,6 +15,12 @@ import { subscribe } from '../lib/scrollStore';
  * clipped to a black void.
  *
  *  - Real perspective projection (world X/Y/Z -> screen) with focal depth.
+ *  - Hero preamble: a DATA_STREAM_SCAN band (camera pulled close, low pitch,
+ *    calm wide drift, nodes sweeping toward the viewer like a scanned data
+ *    stream) hands off to a PARSE_FANOUT micro-band where the stream begins to
+ *    fan into the three RAG lanes. Both sub-bands live on the same smoothstep
+ *    interpolation path and single rAF loop as the section states — one
+ *    interpolation path, no competing easing.
  *  - Section-aligned structural changes (RAG lanes -> timeline spine -> matrix
  *    lattice -> convergence) mapped to scroll progress.
  *  - Parallax & tilt: mouse position tilts the camera; a gentle idle dolly keeps
@@ -42,23 +48,40 @@ type SectionState = {
   vertical: number; // 0..1 lock to central timeline spine
   lattice: number; // 0..1 orthogonal matrix quantization
   converge: number; // 0..1 pull toward a focal point
+  stream: number; // 0..1 hero preamble — data stream sweeping toward the viewer
   label: string;
 };
 
 // camY/camZ are kept in a band that always leaves the geometry in front of the
 // camera; pitch stays small so depth-rotated points never cross the near plane.
 const SECTIONS: SectionState[] = [
-  { camY: 0, camZ: -350, pitch: 0.3, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 0, label: '3D_HORIZON_INIT' }, // Hero
-  { camY: 60, camZ: -480, pitch: 0.42, yaw: 0, lanes: 1, vertical: 0, lattice: 0, converge: 0, label: 'RAG_PIPELINE_SPLIT' }, // About
-  { camY: 140, camZ: -420, pitch: 0.18, yaw: 0, lanes: 0, vertical: 1, lattice: 0, converge: 0, label: 'TIMELINE_SPINE' }, // Experience
-  { camY: 120, camZ: -520, pitch: 0.36, yaw: 0, lanes: 0, vertical: 0, lattice: 1, converge: 0, label: 'MATRIX_LATTICE' }, // Skills
-  { camY: 200, camZ: -600, pitch: 0.24, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 0, label: 'SPATIAL_PROJECTS' }, // Projects
-  { camY: 320, camZ: -720, pitch: 0.48, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 1, label: 'CORE_CONVERGENCE' }, // Contact
+  { camY: 0, camZ: -350, pitch: 0.3, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 0, stream: 0.4, label: '3D_HORIZON_INIT' }, // Hero
+  { camY: 60, camZ: -480, pitch: 0.42, yaw: 0, lanes: 1, vertical: 0, lattice: 0, converge: 0, stream: 0, label: 'RAG_PIPELINE_SPLIT' }, // About
+  { camY: 140, camZ: -420, pitch: 0.18, yaw: 0, lanes: 0, vertical: 1, lattice: 0, converge: 0, stream: 0, label: 'TIMELINE_SPINE' }, // Experience
+  { camY: 120, camZ: -520, pitch: 0.36, yaw: 0, lanes: 0, vertical: 0, lattice: 1, converge: 0, stream: 0, label: 'MATRIX_LATTICE' }, // Skills
+  { camY: 200, camZ: -600, pitch: 0.24, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 0, stream: 0, label: 'SPATIAL_PROJECTS' }, // Projects
+  { camY: 320, camZ: -720, pitch: 0.48, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 1, stream: 0, label: 'CORE_CONVERGENCE' }, // Contact
+];
+
+// Hero-internal preamble zone. The hero stage now owns its own sticky scroll
+// (pins for ~120-140vh), so the hero band of the journey is subdivided into two
+// micro-stations consumed by the SAME getSectionState smoothstep path — no
+// separate easing, no second loop:
+//   - DATA_STREAM_SCAN: scroll 0 -> ~55% of the hero band. Camera pulled closer
+//     (camZ -300), low pitch (0.28), calm wide drift; nodes sweep gently toward
+//     the viewer like a data stream being scanned (stream -> 1).
+//   - PARSE_FANOUT: ~55% -> end of the hero band. The stream begins to fan into
+//     the three lanes (lanes -> 0.8, stream -> 0), handing off to the About
+//     RAG_PIPELINE_SPLIT (lanes:1) state with no competing easing.
+const HERO_PRELUDE: { at: number; state: SectionState }[] = [
+  { at: 0, state: { camY: 0, camZ: -300, pitch: 0.28, yaw: 0, lanes: 0, vertical: 0, lattice: 0, converge: 0, stream: 1, label: 'DATA_STREAM_SCAN' } },
+  { at: 0.55, state: { camY: 12, camZ: -335, pitch: 0.31, yaw: 0, lanes: 0.8, vertical: 0, lattice: 0, converge: 0, stream: 0, label: 'PARSE_FANOUT' } },
 ];
 
 type Node3D = {
   base: Vec3; // original 3D position
   curr: Vec3; // interpolated 3D position
+  prev: Vec3; // position last frame — used for motion-streak trails
   size: number;
   tint: string;
   laneIndex: number;
@@ -156,6 +179,7 @@ export default function FlowField() {
       nodes.push({
         base,
         curr: { ...base },
+        prev: { ...base },
         size: 1.8 + Math.random() * 2.4,
         tint: TINTS[Math.floor(Math.random() * TINTS.length)],
         laneIndex: i % 3,
@@ -222,6 +246,44 @@ export default function FlowField() {
 
     function getSectionState(progress: number): SectionState {
       if (sectionOffsets.length === 0) return SECTIONS[0];
+
+      // If we are within the first section interval (hero band), map progress
+      // through the HERO_PRELUDE micro-stations (DATA_STREAM_SCAN -> PARSE_FANOUT).
+      if (progress <= sectionOffsets[1]) {
+        const p0 = sectionOffsets[0];
+        const p1 = sectionOffsets[1];
+        const localT = Math.max(0, Math.min(1, (progress - p0) / Math.max(0.001, p1 - p0)));
+
+        let subA = HERO_PRELUDE[0].state;
+        let subB = HERO_PRELUDE[1].state;
+        let subProgress = 0;
+
+        if (localT <= HERO_PRELUDE[1].at) {
+          subProgress = localT / HERO_PRELUDE[1].at;
+          subA = HERO_PRELUDE[0].state;
+          subB = HERO_PRELUDE[1].state;
+        } else {
+          subProgress = (localT - HERO_PRELUDE[1].at) / (1 - HERO_PRELUDE[1].at);
+          subA = HERO_PRELUDE[1].state;
+          // Handoff to SECTIONS[1] (RAG_PIPELINE_SPLIT) seamlessly
+          subB = SECTIONS[1];
+        }
+
+        const t = subProgress * subProgress * (3 - 2 * subProgress); // smoothstep
+        return {
+          camY: lerp(subA.camY, subB.camY, t),
+          camZ: lerp(subA.camZ, subB.camZ, t),
+          pitch: lerp(subA.pitch, subB.pitch, t),
+          yaw: lerp(subA.yaw, subB.yaw, t),
+          lanes: lerp(subA.lanes, subB.lanes, t),
+          vertical: lerp(subA.vertical, subB.vertical, t),
+          lattice: lerp(subA.lattice, subB.lattice, t),
+          converge: lerp(subA.converge, subB.converge, t),
+          stream: lerp(subA.stream, subB.stream, t),
+          label: subProgress < 0.5 ? subA.label : subB.label,
+        };
+      }
+
       let idx = 0;
       while (idx < sectionOffsets.length - 1 && progress >= sectionOffsets[idx + 1]) idx++;
       if (idx >= SECTIONS.length - 1) return SECTIONS[SECTIONS.length - 1];
@@ -242,6 +304,7 @@ export default function FlowField() {
         vertical: lerp(a.vertical, b.vertical, t),
         lattice: lerp(a.lattice, b.lattice, t),
         converge: lerp(a.converge, b.converge, t),
+        stream: lerp(a.stream, b.stream, t),
         label: segT < 0.5 ? a.label : b.label,
       };
     }
@@ -256,12 +319,22 @@ export default function FlowField() {
       const scrollProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
       const sec = getSectionState(scrollProgress);
 
+      // Velocity-reactive scale: 1.0 at rest, up to 1.35 at peak scroll speed.
+      // scrollVelocity is a lerp-smoothed pixel-delta (decay constant 0.1 per frame
+      // in the render loop). Threshold 5 px -> 1.0, 40 px -> 1.35, capped.
+      const velTarget = Math.max(0, scrollVelocity - 5) / 35;
+      const velScale = 1.0 + Math.min(0.35, velTarget * 0.35);
+
       // Camera easing toward the section target, plus a gentle idle dolly for life.
+      // In reduced-motion (animate=false), snap the camera to the exact target for
+      // a fully-composed static frame at scroll 0.
       const dolly = animate ? Math.sin(clock * 0.3) * 12 : 0;
-      camera.y = lerp(camera.y, sec.camY, 0.06);
-      camera.z = lerp(camera.z, sec.camZ + dolly, 0.05);
-      camera.pitch = lerp(camera.pitch, sec.pitch + mouseY * 0.05, 0.06);
-      camera.yaw = lerp(camera.yaw, sec.yaw + mouseX * 0.07, 0.06);
+      const camK = animate ? 0.06 : 1;
+      const camKZ = animate ? 0.05 : 1;
+      camera.y = lerp(camera.y, sec.camY, camK);
+      camera.z = lerp(camera.z, sec.camZ + dolly, camKZ);
+      camera.pitch = lerp(camera.pitch, sec.pitch + mouseY * 0.05, camK);
+      camera.yaw = lerp(camera.yaw, sec.yaw + mouseX * 0.07, camK);
 
       ctx.save();
       ctx.scale(DPR, DPR);
@@ -310,11 +383,25 @@ export default function FlowField() {
       // 2. Update + project the node cloud.
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
-        if (animate) n.phase += dt * n.speed * (1 + (scrollVelocity > 5 ? 1.2 : 0));
+        // Velocity-reactive phase speed: scales up to 1.35× at peak scroll speed.
+        if (animate) n.phase += dt * n.speed * velScale;
 
         let tx = n.base.x;
         let ty = n.base.y;
         let tz = n.base.z;
+
+        // Hero stream sweep: during the DATA_STREAM_SCAN preamble (stream > 0),
+        // nodes gently drift toward the viewer (camera is also pulled closer),
+        // giving the impression of a data stream being scanned. A calm, wide
+        // lateral drift adds life.
+        if (sec.stream > 0.01) {
+          // Gentle pull toward the viewer: each node drifts a little closer,
+          // modulated by its own phase so the sweep looks organic.
+          const pull = 120 * sec.stream * (0.5 + 0.5 * Math.sin(n.phase * 0.5 + clock * 0.3));
+          tz = Math.max(280, tz - pull); // keep a floor so nodes never cross the near plane
+          // Calm wide lateral drift
+          tx += Math.sin(n.phase * 0.5 + clock * 0.4) * 45 * sec.stream;
+        }
 
         if (sec.lanes > 0.01) tx = lerp(tx, LANE_X[n.laneIndex], sec.lanes);
         if (sec.vertical > 0.01) {
@@ -337,9 +424,17 @@ export default function FlowField() {
         const fy = Math.cos(n.phase * 0.8) * 10;
         const fz = Math.sin(n.phase * 1.2) * 12;
 
-        n.curr.x = lerp(n.curr.x, tx + fx, 0.06);
-        n.curr.y = lerp(n.curr.y, ty + fy, 0.06);
-        n.curr.z = lerp(n.curr.z, tz + fz, 0.06);
+        // In reduced-motion, snap nodes to their final targets for the static frame.
+        const nodeK = animate ? 0.06 : 1;
+
+        // Store prev before updating curr for motion streak calculation.
+        n.prev.x = n.curr.x;
+        n.prev.y = n.curr.y;
+        n.prev.z = n.curr.z;
+
+        n.curr.x = lerp(n.curr.x, tx + fx, nodeK);
+        n.curr.y = lerp(n.curr.y, ty + fy, nodeK);
+        n.curr.z = lerp(n.curr.z, tz + fz, nodeK);
       }
 
       const projected = nodes
@@ -390,11 +485,11 @@ export default function FlowField() {
         ctx.fill();
       }
 
-      // 5. Travelling signal pulses.
-      if (animate && Math.random() < 0.16 + (scrollVelocity > 3 ? 0.35 : 0)) spawnPulse();
+      // 5. Travelling signal pulses (velocity-reactive spawn & speed).
+      if (animate && Math.random() < 0.16 * velScale) spawnPulse();
       for (let i = pulses.length - 1; i >= 0; i--) {
         const pulse = pulses[i];
-        if (animate) pulse.progress += dt * pulse.speed;
+        if (animate) pulse.progress += dt * pulse.speed * velScale;
         if (pulse.progress >= 1 || pulse.fromNode >= nodes.length || pulse.toNode >= nodes.length) {
           pulses.splice(i, 1);
           continue;
@@ -418,12 +513,39 @@ export default function FlowField() {
         }
       }
 
+      // 5b. Motion streaks — screen-space trails from prev frame to curr frame.
+      // Length scales with velScale (1.0 -> 1.35), only drawn during animate.
+      if (animate) {
+        for (const p of projected) {
+          const n = p.node;
+          const pp = project3D(n.prev.x, n.prev.y, n.prev.z);
+          if (!pp) continue;
+          const ddx = p.sx - pp.sx;
+          const ddy = p.sy - pp.sy;
+          const trail = Math.hypot(ddx, ddy);
+          if (trail < 0.8) continue;
+          // Extend the line by velScale (capped 1.35) to give a sense of speed.
+          const ex = p.sx + ddx * velScale;
+          const ey = p.sy + ddy * velScale;
+          const radius = Math.max(1, n.size * p.scale);
+          const alpha = Math.min(0.22, 0.1 * p.scale * velScale);
+          ctx.strokeStyle = `rgba(${n.tint},${alpha.toFixed(3)})`;
+          ctx.lineWidth = Math.max(0.5, radius * 0.6);
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(ex, ey);
+          ctx.lineTo(p.sx, p.sy);
+          ctx.stroke();
+        }
+      }
+
       // 6. HUD telemetry decal.
       if (W > 768) {
         ctx.font = '10px "IBM Plex Mono", monospace';
         ctx.fillStyle = 'rgba(255,176,0,0.4)';
         ctx.fillText(`[ ${sec.label} ]`, 24, H - 24);
         ctx.fillText(`CAM_Y ${Math.round(camera.y)} · Z ${Math.round(camera.z)}`, 24, H - 40);
+        ctx.fillText(`VEL ${Math.round(scrollVelocity)}`, 24, H - 56);
       }
 
       ctx.restore();

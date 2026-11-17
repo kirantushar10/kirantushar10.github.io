@@ -2,7 +2,7 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="relative border-t border-rule">
+<footer class="relative border-t border-rule footer-with-glow">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
     <div class="flex flex-col md:flex-row items-center justify-between gap-8">
       <!-- Brand -->
@@ -52,5 +52,22 @@ const currentYear = new Date().getFullYear();
         © {currentYear} Tushar Kiran. Built with Astro &amp; React.
       </p>
     </div>
+
+    <style define:scoped>
+      .footer-with-glow {
+        position: relative;
+      }
+      .footer-with-glow::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(255, 176, 0, 0.5), transparent 60%);
+        box-shadow: 0 0 12px rgba(255, 176, 0, 0.35);
+        pointer-events: none;
+      }
+    </style>
   </div>
 </footer>

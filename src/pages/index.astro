@@ -2,6 +2,7 @@
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import FlowField from '../components/FlowField';
+import HeroParallax from '../components/HeroParallax';
 import ProjectCard from '../components/ProjectCard';
 import SkillBadge from '../components/SkillBadge.astro';
 import TimelineLine from '../components/TimelineLine';
@@ -179,90 +180,16 @@ const skillsLanguages = ['Python', 'TypeScript', 'JavaScript', 'SQL', 'TensorFlo
     <!-- Film grain -->
     <div class="grain-overlay" aria-hidden="true" />
 
+    <!-- Scanline overlay (subtle CRT texture) -->
+    <div class="scanline-overlay" aria-hidden="true" />
+
     <Navbar />
 
     <main class="relative z-10">
       <!-- ============================== HERO ============================== -->
-      <section class="relative min-h-screen flex items-end">
-        <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-14">
-          <!-- Kicker -->
-          <p class="kicker mb-6" data-reveal>
-            01 — Tushar Kiran · AI/ML Engineer · Munich
-          </p>
-
-          <!-- Oversized headline — line-mask rise, copy verbatim -->
-          <h1
-            class="font-display font-bold tracking-[-0.03em] leading-[0.98] text-[clamp(3rem,9.5vw,8.25rem)]"
-            data-reveal
-            style="--rd: 80ms"
-          >
-            <span class="mask-line"><span class="reveal-inner">Building AI</span></span>
-            <span class="mask-line" style="--rd: 180ms"><span class="reveal-inner">Agents &amp;</span></span>
-            <span class="mask-line" style="--rd: 280ms">
-              <span class="reveal-inner"><span class="text-amber">RAG</span> Pipelines</span>
-            </span>
-          </h1>
-
-          <!-- Bio + CTAs (left) / status line (right, off-grid) -->
-          <div class="mt-10 md:mt-14 grid gap-10 md:grid-cols-12 items-end">
-            <div class="md:col-span-5 lg:col-span-4" data-reveal style="--rd: 360ms">
-              <p class="text-base sm:text-lg leading-relaxed text-ink/80">
-                Hi, I&apos;m <strong class="text-ink font-semibold">Tushar Kiran</strong>. I architect
-                production LLM applications, retrieval-augmented generation systems, and agentic
-                workflows for enterprise engineering platforms.
-              </p>
-              <div class="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="#projects"
-                  class="inline-flex items-center gap-2 px-7 py-3.5 bg-amber text-char font-mono text-xs font-semibold uppercase tracking-[0.18em] hover:bg-[#ffc233] transition-colors duration-300"
-                >
-                  Explore Projects →
-                </a>
-                <a
-                  href="#experience"
-                  class="inline-flex items-center gap-2 px-7 py-3.5 border border-rule text-ink font-mono text-xs uppercase tracking-[0.18em] hover:border-amber-dim hover:text-amber transition-colors duration-300"
-                >
-                  View Experience
-                </a>
-              </div>
-            </div>
-            <div class="md:col-span-7 lg:col-span-8 flex md:justify-end" data-reveal style="--rd: 440ms">
-              <p class="font-mono text-xs sm:text-sm text-muted">
-                [ AI/ML Specialist · Munich, Germany ]<span class="caret" aria-hidden="true" />
-              </p>
-            </div>
-          </div>
-
-          <!-- Stats — hairline-divided row, mono numerals -->
-          <div
-            class="mt-14 md:mt-20 border-t border-rule grid grid-cols-2 md:grid-cols-4"
-            data-reveal
-            style="--rd: 520ms"
-          >
-            <div class="py-6 md:pr-8 md:border-r md:border-rule">
-              <p class="font-mono text-3xl sm:text-4xl text-ink">11+</p>
-              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">AI/ML Projects</p>
-            </div>
-            <div class="py-6 md:px-8 md:border-r md:border-rule">
-              <p class="font-mono text-3xl sm:text-4xl text-ink">150+</p>
-              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Students Mentored</p>
-            </div>
-            <div class="py-6 md:px-8 md:border-r md:border-rule col-span-2 md:col-span-1">
-              <p class="font-mono text-3xl sm:text-4xl text-amber">M.Sc.</p>
-              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Artificial Intelligence</p>
-            </div>
-            <div class="py-6 md:pl-8 col-span-2 md:col-span-1">
-              <p class="font-mono text-3xl sm:text-4xl text-ink">15+</p>
-              <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Batch Automation</p>
-            </div>
-          </div>
-
-          <!-- Scroll cue -->
-          <div class="mt-12 flex items-center gap-3 scroll-cue" aria-hidden="true">
-            <span class="w-px h-8 bg-amber-dim" />
-            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">Scroll to explore</span>
-          </div>
-        </div>
+      <section id="hero" class="relative h-[160vh]">
+        <div class="hero-frame absolute inset-0 pointer-events-none" aria-hidden="true" />
+        <HeroParallax client:visible />
       </section>
 
       <!-- ============================== ABOUT ============================== -->

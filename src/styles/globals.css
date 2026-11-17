@@ -71,6 +71,24 @@
 }
 
 /* ============================================================
+   Scanline overlay — subtle CRT texture, additive above grain
+   ============================================================ */
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 81;
+  pointer-events: none;
+  opacity: 0.035;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 176, 0, 0.15) 2px,
+    rgba(255, 176, 0, 0.15) 3px
+  );
+}
+
+/* ============================================================
    Type & label utilities
    ============================================================ */
 .kicker {
@@ -121,6 +139,75 @@
   right: -1px;
   border-bottom: 1px solid;
   border-right: 1px solid;
+}
+
+/* Hero frame corner brackets */
+.hero-frame {
+  position: relative;
+}
+.hero-frame::before,
+.hero-frame::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--color-amber-dim);
+  pointer-events: none;
+  z-index: 10;
+}
+.hero-frame::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid var(--color-amber-dim);
+  border-left: 1px solid var(--color-amber-dim);
+}
+.hero-frame::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid var(--color-amber-dim);
+  border-right: 1px solid var(--color-amber-dim);
+}
+
+/* HUD label, panel and live dot utilities */
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-amber-dim);
+}
+
+.hud-panel {
+  border: 1px solid var(--color-rule);
+  background-color: rgba(11, 11, 12, 0.5);
+  backdrop-filter: none;
+}
+
+.hud-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-amber);
+  box-shadow: 0 0 8px rgba(255, 176, 0, 0.7);
+  animation: hudDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes hudDotPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Section hairline rule with amber gradient glow */
+.rule-glow {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 176, 0, 0.5), transparent 40%);
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.35);
 }
 
 /* ============================================================
@@ -212,10 +299,19 @@
     background-color 0.4s ease;
 }
 .navbar.navbar-scrolled {
-  border-bottom-color: var(--color-rule);
+  border-bottom: none;
+  border-image: linear-gradient(90deg, var(--color-amber), transparent 60%) 1;
   background-color: rgba(11, 11, 12, 0.82);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+}
+
+/* TK mark hover glow */
+.tk-mark {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.tk-mark:hover {
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.45);
 }
 
 /* ============================================================
@@ -341,6 +437,10 @@
   .scroll-cue {
     animation: none;
     opacity: 0.7;
+  }
+  .hud-dot {
+    animation: none !important;
+    opacity: 1 !important;
   }
   .marquee {
     -webkit-mask-image: none;
