@@ -19,11 +19,11 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <title>{cs.title.en} — Tushar Kiran</title>
-    <meta name="description" content={cs.summary.en} />
+    <title>{cs.title} — Tushar Kiran</title>
+    <meta name="description" content={cs.summary} />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content={cs.title.en} />
-    <meta property="og:description" content={cs.summary.en} />
+    <meta property="og:title" content={cs.title} />
+    <meta property="og:description" content={cs.summary} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,9 +32,6 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
     />
     <script is:inline>
       document.documentElement.classList.add('js');
-      try {
-        if (localStorage.getItem('lang') === 'de') document.documentElement.classList.add('de');
-      } catch (e) {}
     </script>
   </head>
 
@@ -45,23 +42,18 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
       <article class="max-w-3xl mx-auto px-6 pt-32 pb-24 cs-prose">
         <!-- Breadcrumb -->
         <p class="font-mono text-xs text-dim mb-10" data-reveal>
-          <a href="/" class="hover:text-ink transition">
-            <span class="lang-en">← All work</span>
-            <span class="lang-de">← Alle Projekte</span>
-          </a>
+          <a href="/" class="hover:text-ink transition">← All work</a>
           <span class="mx-3">/</span>{cs.index}
         </p>
 
         <p class="font-mono text-xs tracking-[0.2em] uppercase text-gold mb-5" data-reveal>
-          {cs.year} · <span class="lang-en">{cs.role.en}</span><span class="lang-de">{cs.role.de}</span>
+          {cs.year} · {cs.role}
         </p>
         <h1 class="text-3xl sm:text-5xl font-semibold tracking-tight leading-[1.08]" data-reveal style="--rd: 80ms">
-          <span class="lang-en">{cs.title.en}</span>
-          <span class="lang-de">{cs.title.de}</span>
+          {cs.title}
         </h1>
         <p class="mt-6 text-lg text-mid leading-relaxed" data-reveal style="--rd: 160ms">
-          <span class="lang-en">{cs.summary.en}</span>
-          <span class="lang-de">{cs.summary.de}</span>
+          {cs.summary}
         </p>
 
         <!-- Stack chips -->
@@ -74,30 +66,19 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
         <hr class="border-rule my-12" />
 
         <!-- Overview -->
-        <h3 data-reveal>
-          <span class="lang-en">Overview</span>
-          <span class="lang-de">Überblick</span>
-        </h3>
+        <h3 data-reveal>Overview</h3>
         <p data-reveal>
-          <span class="lang-en">{cs.overview.en}</span>
-          <span class="lang-de">{cs.overview.de}</span>
+          {cs.overview}
         </p>
 
         <!-- Challenge -->
-        <h3 class="mt-12" data-reveal>
-          <span class="lang-en">The Challenge</span>
-          <span class="lang-de">Die Herausforderung</span>
-        </h3>
+        <h3 class="mt-12" data-reveal>The Challenge</h3>
         <p data-reveal>
-          <span class="lang-en">{cs.challenge.en}</span>
-          <span class="lang-de">{cs.challenge.de}</span>
+          {cs.challenge}
         </p>
 
         <!-- Approach -->
-        <h3 class="mt-12" data-reveal>
-          <span class="lang-en">Approach</span>
-          <span class="lang-de">Vorgehen</span>
-        </h3>
+        <h3 class="mt-12" data-reveal>Approach</h3>
         <ul class="mt-4 space-y-3" data-reveal>
           {cs.approach.map((a) => (
             <li class="flex items-start gap-3">
@@ -108,13 +89,9 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
         </ul>
 
         <!-- Outcome -->
-        <h3 class="mt-12" data-reveal>
-          <span class="lang-en">Outcome</span>
-          <span class="lang-de">Ergebnis</span>
-        </h3>
+        <h3 class="mt-12" data-reveal>Outcome</h3>
         <p data-reveal>
-          <span class="lang-en">{cs.outcome.en}</span>
-          <span class="lang-de">{cs.outcome.de}</span>
+          {cs.outcome}
         </p>
 
         <!-- Repo link -->
@@ -125,30 +102,24 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
             rel="noopener"
             class="px-5 py-2.5 bg-gold text-bg text-sm font-medium rounded-lg hover:brightness-110 transition"
           >
-            <span class="lang-en">View on GitHub ↗</span>
-            <span class="lang-de">Auf GitHub ansehen ↗</span>
+            View on GitHub ↗
           </a>
           <a
             href="/"
             class="px-5 py-2.5 border border-rule text-sm text-mid rounded-lg hover:text-ink hover:border-gold/50 transition"
           >
-            <span class="lang-en">← All work</span>
-            <span class="lang-de">← Alle Projekte</span>
+            ← All work
           </a>
         </div>
 
         <!-- Next case study -->
         <div class="mt-16 border-t border-rule pt-6">
-          <p class="font-mono text-xs text-dim mb-2">
-            <span class="lang-en">Next case study</span>
-            <span class="lang-de">Nächste Case Study</span>
-          </p>
+          <p class="font-mono text-xs text-dim mb-2">Next case study</p>
           <a
             href={`/work/${next.slug}/`}
             class="text-xl font-semibold tracking-tight hover:text-gold transition"
           >
-            <span class="lang-en">{next.title.en} ↗</span>
-            <span class="lang-de">{next.title.de} ↗</span>
+            {next.title} ↗
           </a>
         </div>
       </article>
@@ -176,19 +147,6 @@ const next = caseStudies[(idx + 1) % caseStudies.length];
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
       }
-
-      document.querySelectorAll('.lang-toggle button').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const isDe = btn.dataset.lang === 'de';
-          document.documentElement.classList.toggle('de', isDe);
-          document.querySelectorAll('.lang-toggle button').forEach((b) =>
-            b.classList.toggle('active', b === btn)
-          );
-          try {
-            localStorage.setItem('lang', isDe ? 'de' : 'en');
-          } catch (e) {}
-        });
-      });
     </script>
   </body>
 </html>

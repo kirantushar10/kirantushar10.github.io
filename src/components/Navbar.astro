@@ -1,11 +1,11 @@
 ---
 const navItems = [
-  { label: { en: 'About', de: 'Über mich' }, href: '#about' },
-  { label: { en: 'Experience', de: 'Arbeitserfahrung' }, href: '#experience' },
-  { label: { en: 'Skills', de: 'Fähigkeiten' }, href: '#skills' },
-  { label: { en: 'Projects', de: 'Projekte' }, href: '#work' },
-  { label: { en: 'Education', de: 'Bildung' }, href: '#education' },
-  { label: { en: 'Contact', de: 'Kontakt' }, href: '#contact' },
+  { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Projects', href: '#work' },
+  { label: 'Education', href: '#education' },
+  { label: 'Contact', href: '#contact' },
 ];
 ---
 
@@ -18,27 +18,17 @@ const navItems = [
     <div class="hidden md:flex items-center gap-1">
       {navItems.map((item) => (
         <a href={item.href} class="nav-link text-sm px-4 py-2 rounded-full">
-          <span class="lang-en">{item.label.en}</span>
-          <span class="lang-de">{item.label.de}</span>
+          {item.label}
         </a>
       ))}
     </div>
 
     <div class="flex items-center gap-3">
-      <div class="lang-toggle flex items-center gap-1" role="group" aria-label="Language">
-        <button data-lang="en" class="text-sm px-3 py-1.5 rounded-full active" aria-label="English">
-          EN
-        </button>
-        <button data-lang="de" class="text-sm px-3 py-1.5 rounded-full" aria-label="Deutsch">
-          DE
-        </button>
-      </div>
       <a
         href="#contact"
         class="hidden sm:inline-block px-4 py-2 bg-gold text-bg text-sm font-medium rounded-full hover:brightness-110 transition"
       >
-        <span class="lang-en">Let's talk</span>
-        <span class="lang-de">Sprechen</span>
+        Let's talk
       </a>
     </div>
   </nav>

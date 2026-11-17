@@ -31,11 +31,6 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
     />
     <script is:inline>
       document.documentElement.classList.add('js');
-      try {
-        if (localStorage.getItem('lang') === 'de') {
-          document.documentElement.classList.add('de');
-        }
-      } catch (e) {}
     </script>
   </head>
 
@@ -72,8 +67,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
 
         <div class="relative w-full max-w-5xl mx-auto px-6 py-28">
           <p class="font-mono text-xs tracking-[0.22em] text-gold uppercase mb-6" data-reveal>
-            <span class="lang-en">AI/ML Engineer · Munich, Germany</span>
-            <span class="lang-de">AI/ML-Ingenieur · München, Deutschland</span>
+            AI/ML Engineer · Munich, Germany
           </p>
 
           <h1
@@ -81,42 +75,34 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
             data-reveal
           >
             <span class="mask-line">
-              <span class="reveal-inner"><span class="lang-en">Building</span><span class="lang-de">Ich baue</span></span>
+              <span class="reveal-inner">Building</span>
             </span>
             <span class="mask-line" style="--rd: 120ms">
-              <span class="reveal-inner"><span class="lang-en">AI Agents</span><span class="lang-de">KI-Agenten</span> <span class="text-gold">&amp;</span> RAG</span>
+              <span class="reveal-inner">AI Agents <span class="text-gold">&amp;</span> RAG</span>
             </span>
             <span class="mask-line" style="--rd: 240ms">
-              <span class="reveal-inner"><span class="lang-en">Pipelines</span><span class="lang-de">Pipeline</span></span>
+              <span class="reveal-inner">Pipelines</span>
             </span>
           </h1>
 
           <div class="mt-10 grid gap-10 md:grid-cols-12 items-end" data-reveal style="--rd: 380ms">
             <div class="md:col-span-7">
               <p class="text-base sm:text-lg leading-relaxed text-mid max-w-xl">
-                <span class="lang-en">
-                  I architect production LLM applications, retrieval-augmented generation
-                  systems, and agentic workflows for enterprise engineering platforms.
-                </span>
-                <span class="lang-de">
-                  Ich baue Produktions-LLM-Anwendungen, Retrieval-Augmented-Generation-Systeme
-                  und agentenbasierte Workflows für Unternehmens-Engineering-Plattformen.
-                </span>
+                I architect production LLM applications, retrieval-augmented generation
+                systems, and agentic workflows for enterprise engineering platforms.
               </p>
               <div class="mt-8 flex flex-wrap gap-4">
                 <a href="#work" class="px-6 py-3 bg-gold text-bg text-sm font-medium rounded-lg hover:brightness-110 transition">
-                  <span class="lang-en">View Work</span>
-                  <span class="lang-de">Arbeiten ansehen</span>
+                  View Work
                 </a>
                 <a href="#contact" class="px-6 py-3 border border-rule text-mid text-sm rounded-lg hover:text-ink hover:border-gold/50 transition">
-                  <span class="lang-en">Get in Touch</span>
-                  <span class="lang-de">Kontakt</span>
+                  Get in Touch
                 </a>
               </div>
             </div>
             <div class="md:col-span-5 flex md:justify-end" data-parallax="0.08">
               <p class="font-mono text-xs sm:text-sm text-dim">
-                [ <span class="lang-en">AI/ML Specialist · Munich, DE</span><span class="lang-de">KI/ML-Spezialist · München, DE</span> ]
+                [ AI/ML Specialist · Munich, DE ]
                 <span class="caret" aria-hidden="true"></span>
               </p>
             </div>
@@ -125,7 +111,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="mt-14 flex items-center gap-3 scroll-cue" aria-hidden="true" data-reveal style="--rd: 500ms">
             <span class="w-px h-8 bg-gold/40"></span>
             <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-dim">
-              <span class="lang-en">Scroll</span><span class="lang-de">Scrollen</span>
+              Scroll
             </span>
           </div>
         </div>
@@ -137,70 +123,49 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="flex items-baseline gap-4 mb-12" data-reveal>
             <span class="font-mono text-xs text-gold">01</span>
             <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
-            <h2 class="text-xl font-semibold tracking-tight">
-              <span class="lang-en">About Me</span><span class="lang-de">Über mich</span>
-            </h2>
+            <h2 class="text-xl font-semibold tracking-tight">About Me</h2>
           </div>
 
           <div class="grid gap-12 md:grid-cols-12">
             <div class="md:col-span-7" data-parallax="0.05">
               <p class="mask-line" data-reveal>
                 <span class="reveal-inner text-2xl sm:text-3xl md:text-[2rem] font-medium leading-[1.3] tracking-tight text-ink">
-                  <span class="lang-en">
-                    I turn messy enterprise data into reliable AI systems — RAG pipelines that
-                    answer with grounding, agents that route themselves, and the MLOps that keeps
-                    both honest.
-                  </span>
-                  <span class="lang-de">
-                    Ich verwandele unstrukturierte Unternehmensdaten in verlässliche
-                    KI-Systeme — RAG-Pipelines mit Grounding, Agenten, die sich selbst
-                    routen, und die MLOps, die beides im Zaum hält.
-                  </span>
+                  I turn messy enterprise data into reliable AI systems — RAG pipelines that
+                  answer with grounding, agents that route themselves, and the MLOps that keeps
+                  both honest.
                 </span>
               </p>
               <p class="mt-8 text-base leading-relaxed text-mid max-w-xl" data-reveal style="--rd: 160ms">
-                <span class="lang-en">
-                  I recently completed my AI/ML engineering internship at
-                  <strong class="text-ink font-semibold">Analog Devices</strong>, where I built an
-                  AI-assisted engineering analytics platform — an intent-aware RAG pipeline over a
-                  knowledge graph, backed by FastAPI, PostgreSQL, Redis, and Apache Airflow.
-                </span>
-                <span class="lang-de">
-                  Ich habe kürzlich mein AI/ML-Engineering-Praktikum bei
-                  <strong class="text-ink font-semibold">Analog Devices</strong> abgeschlossen und
-                  dort eine KI-gestützte Engineering-Analytics-Plattform gebaut — eine
-                  kontextbewusste RAG-Pipeline über einen Knowledge Graph, unterlegt
-                  mit FastAPI, PostgreSQL, Redis und Apache Airflow.
-                </span>
+                I recently completed my AI/ML engineering internship at
+                <strong class="text-ink font-semibold">Analog Devices</strong>, where I built an
+                AI-assisted engineering analytics platform — an intent-aware RAG pipeline over a
+                knowledge graph, backed by FastAPI, PostgreSQL, Redis, and Apache Airflow.
               </p>
             </div>
 
             <div class="md:col-span-5 space-y-6" data-reveal data-reveal="right" style="--rd: 200ms">
               <div class="border-t border-rule pt-4">
                 <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold mb-2">
-                  <span class="lang-en">Core focus</span><span class="lang-de">Kernbereich</span>
+                  Core focus
                 </h3>
                 <p class="text-sm text-mid leading-relaxed">
-                  <span class="lang-en">Agentic RAG · LangGraph reasoning · Cost-aware LLM routing · Vector search</span>
-                  <span class="lang-de">Agenten-RAG · LangGraph-Reasoning · kosteneffizientes LLM-Routing · Vektorsuche</span>
+                  Agentic RAG · LangGraph reasoning · Cost-aware LLM routing · Vector search
                 </p>
               </div>
               <div class="border-t border-rule pt-4">
                 <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold mb-2">
-                  <span class="lang-en">Education</span><span class="lang-de">Bildung</span>
+                  Education
                 </h3>
                 <p class="text-sm text-mid leading-relaxed">
-                  <span class="lang-en">M.Sc. Artificial Intelligence (BTU Cottbus) · B.E. Information Science (SJB Institute)</span>
-                  <span class="lang-de">M.Sc. Artificial Intelligence (BTU Cottbus) · B.E. Information Science (SJB Institute)</span>
+                  M.Sc. Artificial Intelligence (BTU Cottbus) · B.E. Information Science (SJB Institute)
                 </p>
               </div>
               <div class="border-y border-rule py-4">
                 <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold mb-2">
-                  <span class="lang-en">Location</span><span class="lang-de">Standort</span>
+                  Location
                 </h3>
                 <p class="text-sm text-mid leading-relaxed">
-                  <span class="lang-en">Munich, Germany · Open to AI engineering collaborations</span>
-                  <span class="lang-de">München, Deutschland · Offen für KI-Engineering-Zusammenarbeit</span>
+                  Munich, Germany · Open to AI engineering collaborations
                 </p>
               </div>
             </div>
@@ -214,9 +179,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="flex items-baseline gap-4 mb-14" data-reveal>
             <span class="font-mono text-xs text-gold">02</span>
             <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
-            <h2 class="text-xl font-semibold tracking-tight">
-              <span class="lang-en">Work Experience</span><span class="lang-de">Arbeitserfahrung</span>
-            </h2>
+            <h2 class="text-xl font-semibold tracking-tight">Work Experience</h2>
           </div>
 
           <div class="relative pl-8 sm:pl-12">
@@ -231,23 +194,16 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
                   <div class="border-t border-rule pt-5">
                     <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 mb-2">
                       <h3 class="text-xl md:text-2xl font-semibold tracking-tight">
-                        <span class="lang-en">{exp.role.en}</span>
-                        <span class="lang-de">{exp.role.de}</span>
+                        {exp.role}
                       </h3>
                       <span class="font-mono text-xs text-gold whitespace-nowrap">{exp.period}</span>
                     </div>
                     <p class="text-sm text-dim mb-4">
-                      {exp.company} · <span class="lang-en">{exp.location.en}</span><span class="lang-de">{exp.location.de}</span>
+                      {exp.company} · {exp.location}
                     </p>
                     <ul class="space-y-2.5 text-[15px] text-mid leading-relaxed">
-                      {exp.bullets.en.map((b) => (
-                        <li class="lang-en flex items-start gap-3">
-                          <span class="text-gold mt-px text-xs shrink-0" aria-hidden="true">▸</span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                      {exp.bullets.de.map((b) => (
-                        <li class="lang-de flex items-start gap-3">
+                      {exp.bullets.map((b) => (
+                        <li class="flex items-start gap-3">
                           <span class="text-gold mt-px text-xs shrink-0" aria-hidden="true">▸</span>
                           <span>{b}</span>
                         </li>
@@ -267,9 +223,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="flex items-baseline gap-4 mb-14" data-reveal>
             <span class="font-mono text-xs text-gold">03</span>
             <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
-            <h2 class="text-xl font-semibold tracking-tight">
-              <span class="lang-en">Skills</span><span class="lang-de">Fähigkeiten</span>
-            </h2>
+            <h2 class="text-xl font-semibold tracking-tight">Skills</h2>
           </div>
 
           <div class="space-y-12">
@@ -277,7 +231,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
               <div data-reveal style={`--rd: ${i * 80}ms`} data-parallax={i % 2 === 0 ? '0.03' : '-0.03'}>
                 <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-dim mb-5">
                   <span class="text-gold" aria-hidden="true">—</span>
-                  <span class="lang-en">{g.label.en}</span><span class="lang-de">{g.label.de}</span>
+                  {g.label}
                 </h3>
                 <div class="flex flex-wrap gap-2.5">
                   {g.items.map((s) => (
@@ -296,13 +250,10 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="flex items-baseline gap-4 mb-6" data-reveal>
             <span class="font-mono text-xs text-gold">04</span>
             <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
-            <h2 class="text-xl font-semibold tracking-tight">
-              <span class="lang-en">Projects</span><span class="lang-de">Projekte</span>
-            </h2>
+            <h2 class="text-xl font-semibold tracking-tight">Projects</h2>
           </div>
           <p class="text-sm text-dim mb-12" data-reveal style="--rd: 100ms">
-            <span class="lang-en">Case studies first — deep dives into the systems I shipped. Then the rest of the build list.</span>
-            <span class="lang-de">Zuerst die Case Studies — tiefe Einblicke in die Systeme, die ich ausgeliefert. Danach die restliche Build-Liste.</span>
+            Case studies first — deep dives into the systems I shipped. Then the rest of the build list.
           </p>
 
           <!-- Case studies (full detail pages) -->
@@ -314,17 +265,15 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
                     <span class="font-mono text-xs text-dim">{cs.index}</span>
                     <span class="font-mono text-xs text-gold">{cs.year}</span>
                     <span class="font-mono text-xs text-dim">
-                      · <span class="lang-en">{cs.role.en}</span><span class="lang-de">{cs.role.de}</span>
+                      · {cs.role}
                     </span>
                   </div>
                   <h3 class="work-title text-xl sm:text-2xl font-semibold tracking-tight flex items-center gap-3">
-                    <span class="lang-en">{cs.title.en}</span>
-                    <span class="lang-de">{cs.title.de}</span>
+                    {cs.title}
                     <span class="work-arrow text-gold" aria-hidden="true">↗</span>
                   </h3>
                   <p class="mt-2 text-sm sm:text-[15px] text-mid leading-relaxed max-w-2xl">
-                    <span class="lang-en">{cs.summary.en}</span>
-                    <span class="lang-de">{cs.summary.de}</span>
+                    {cs.summary}
                   </p>
                 </a>
                 <span class="work-underline" aria-hidden="true"></span>
@@ -335,7 +284,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <!-- More projects grid -->
           <h3 class="font-mono text-[11px] uppercase tracking-[0.2em] text-dim mb-6" data-reveal>
             <span class="text-gold" aria-hidden="true">—</span>
-            <span class="lang-en">More builds</span><span class="lang-de">Weitere Builds</span>
+            More builds
           </h3>
           <div class="grid gap-1.5 sm:grid-cols-2">
             {projects.map((p, i) => (
@@ -349,8 +298,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
                     </span>
                   </div>
                   <p class="mt-2 text-[13.5px] text-mid leading-relaxed">
-                    <span class="lang-en">{p.description.en}</span>
-                    <span class="lang-de">{p.description.de}</span>
+                    {p.description}
                   </p>
                   <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1">
                     {p.tags.map((t) => (
@@ -371,9 +319,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="flex items-baseline gap-4 mb-14" data-reveal>
             <span class="font-mono text-xs text-gold">05</span>
             <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
-            <h2 class="text-xl font-semibold tracking-tight">
-              <span class="lang-en">Education</span><span class="lang-de">Bildung</span>
-            </h2>
+            <h2 class="text-xl font-semibold tracking-tight">Education</h2>
           </div>
 
           <div class="grid gap-x-12 md:grid-cols-2">
@@ -405,30 +351,27 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
             <span class="font-mono text-xs text-gold">06</span>
             <span class="h-px flex-1 bg-rule" aria-hidden="true"></span>
             <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-dim">
-              <span class="lang-en">Contact</span><span class="lang-de">Kontakt</span>
+              Contact
             </span>
           </div>
 
           <h2 class="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.02em] leading-[1.04]" data-reveal>
             <span class="mask-line">
-              <span class="reveal-inner"><span class="lang-en">Let's build</span><span class="lang-de">Lass uns bauen</span></span>
+              <span class="reveal-inner">Let's build</span>
             </span>
             <span class="mask-line" style="--rd: 150ms">
-              <span class="reveal-inner"><span class="lang-en">something</span><span class="lang-de">Außergewöhnliches</span> <span class="text-gold"><span class="lang-en">exceptional</span><span class="lang-de">Außergewöhnliches</span></span></span>
+              <span class="reveal-inner">something <span class="text-gold">exceptional</span></span>
             </span>
           </h2>
 
           <p class="mt-8 text-base text-mid leading-relaxed max-w-xl" data-reveal style="--rd: 300ms">
-            <span class="lang-en">
-              Working on production AI agents, RAG pipelines, or enterprise MLOps? Let's talk.
-            </span>
-            <span class="lang-de">Produktions-KI-Agenten, RAG-Pipelines oder Unternehmens-MLOps im Blick? Lass uns sprechen.</span>
+            Working on production AI agents, RAG pipelines, or enterprise MLOps? Let's talk.
           </p>
 
           <div class="mt-14" data-reveal style="--rd: 380ms">
             <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-dim mb-5">
               <span class="text-gold" aria-hidden="true">→</span>
-              <span class="lang-en">Get in touch</span><span class="lang-de">Kontakt aufnehmen</span>
+              Get in touch
             </p>
             <a href="mailto:kirantushar10@gmail.com" class="big-link text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight break-all">
               kirantushar10@gmail.com
@@ -483,20 +426,6 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
       }
-
-      // Language toggle
-      document.querySelectorAll('.lang-toggle button').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const isDe = btn.dataset.lang === 'de';
-          document.documentElement.classList.toggle('de', isDe);
-          document.querySelectorAll('.lang-toggle button').forEach((b) =>
-            b.classList.toggle('active', b === btn)
-          );
-          try {
-            localStorage.setItem('lang', isDe ? 'de' : 'en');
-          } catch (e) {}
-        });
-      });
     </script>
   </body>
 </html>

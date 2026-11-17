@@ -124,19 +124,6 @@
 }
 
 /* ============================================================
-   Bilingual toggle — EN shown by default, .de swaps
-   ============================================================ */
-.lang-de {
-  display: none;
-}
-html.de .lang-en {
-  display: none;
-}
-html.de .lang-de {
-  display: inline-block;
-}
-
-/* ============================================================
    Scroll progress bar (gold, top hairline, driven by scroll)
    ============================================================ */
 .scroll-progress {
@@ -203,21 +190,6 @@ html.de .lang-de {
     opacity: 0.35;
     box-shadow: none;
   }
-}
-
-.lang-toggle button {
-  color: var(--color-dim);
-  transition:
-    color 0.25s ease,
-    background-color 0.25s ease;
-}
-.lang-toggle button:hover {
-  color: var(--color-ink);
-  background-color: var(--color-elevated);
-}
-.lang-toggle button.active {
-  color: var(--color-ink);
-  font-weight: 600;
 }
 
 /* ============================================================
