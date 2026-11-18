@@ -514,6 +514,16 @@
   width: 1px;
   background: var(--color-rule);
 }
+
+.tl-rail-gap {
+  position: absolute;
+  left: 0;
+  width: 1px; /* Match rail width */
+  height: 12px; /* Gap size */
+  background: var(--color-bg); /* Match page background */
+  pointer-events: none;
+  z-index: 10;
+}
 .timeline-line {
   position: absolute;
   top: 6px;

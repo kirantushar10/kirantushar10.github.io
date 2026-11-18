@@ -7,7 +7,9 @@ import { subscribe } from '../lib/scrollStore';
  * shared scrollStore clock. Each experience node is re-centred on the rail
  * at runtime (measured, not hard-coded), so the glowing dot sits exactly on
  * the vertical line on every breakpoint — mobile and desktop — and glows as
- * the spine draws past it. Reduced motion: drawn fully, nodes lit, no motion.
+ * the spine draws past it. A small gap in the rail at each node ensures the
+ * dot appears seated on the line, not floating above it. Reduced motion:
+ * drawn fully, nodes lit, no motion.
  */
 export default function TimelineLine() {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,6 +45,42 @@ export default function TimelineLine() {
       });
     };
 
+    // Add small gap elements under the rail at each node's vertical position
+    // so the dot appears seated on the line rather than floating above it.
+    const addRailGaps = () => {
+      if (!rail) return;
+      // Remove existing gaps first
+      const existingGaps = rail.querySelectorAll('.tl-rail-gap');
+      existingGaps.forEach(g => g.remove());
+
+      // Add a gap element at each node's position. The gap is a thin transparent
+      // rect that sits on top of the rail, creating a break where the dot glows.
+      nodes.forEach((n, i) => {
+        const gap = document.createElement('div');
+        gap.className = 'tl-rail-gap';
+        gap.style.position = 'absolute';
+        gap.style.left = '0';
+        gap.style.top = '6px'; // start of rail
+        gap.style.bottom = '6px'; // end of rail
+        gap.style.width = '12px'; // slightly wider than the 9px dot
+        gap.style.pointerEvents = 'none';
+        gap.style.zIndex = '10';
+        // Estimate vertical position: nodes are roughly evenly distributed
+        // through the experience section. We use the node's top position relative
+        // to the section to determine the gap's height offset.
+        const nr = n.getBoundingClientRect();
+        const sectionRect = section.getBoundingClientRect();
+        const nodeTopPercent = (nr.top - sectionRect.top) / sectionRect.height;
+        // Map to rail height (section height minus 12px top/bottom padding)
+        const railHeight = sectionRect.height - 12;
+        const gapTop = nodeTopPercent * railHeight;
+        gap.style.top = `calc(${gapTop}px)`; // Adjusted
+        gap.style.height = '12px'; // Match CSS
+        gap.style.background = 'var(--color-bg)'; // Match page background
+        rail.appendChild(gap);
+      });
+    };
+
     const draw = () => {
       // Re-centre on every tick: each item wrapper carries a
       // translateX reveal that moves while the item scrolls into view, and
@@ -50,6 +88,10 @@ export default function TimelineLine() {
       // wrapper's *current* rect keeps the node pinned to the rail through
       // the whole reveal — measuring once at mount lets the reveal jump it.
       centerNodes();
+
+      // Update rail gap positions on every tick so they stay aligned
+      // with nodes even as scroll-reveal transforms shift them.
+      addRailGaps();
 
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
@@ -78,7 +120,7 @@ export default function TimelineLine() {
     centerNodes();
     draw();
     const unsub = subscribe(draw);
-    window.addEventListener('resize', () => { centerNodes(); draw(); }, { passive: true });
+    window.addEventListener('resize', () => { centerNodes(); draw(); addRailGaps(); }, { passive: true });
     return () => {
       unsub();
       window.removeEventListener('resize', centerNodes);
