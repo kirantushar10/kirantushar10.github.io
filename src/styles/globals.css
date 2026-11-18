@@ -525,10 +525,12 @@
   transform-origin: top;
   will-change: transform;
 }
-/* Node is 9px wide; left is set so its center sits on the rail center
-   (rail: left:56px from the outer .relative container). The node's
-   positioning ancestor is each item wrapper, whose left edge = the
-   container's padding (pl-8 / sm:pl-12). 20px / 4px center the dot. */
+/* Node is 9px wide. TimelineLine centres each node on the rail at runtime
+   (measured, not hard-coded) so the dot sits exactly on the vertical line on
+   every breakpoint. The `left` below is the no-JS / pre-hydration fallback:
+   20px centres the dot on the rail at the mobile breakpoint (rail is
+   left:56px from the padded wrapper, node is relative to the flat item).
+   TimelineLine re-centres on mount, so these are no-JS fallbacks only. */
 .tl-node {
   position: absolute;
   left: 20px;
