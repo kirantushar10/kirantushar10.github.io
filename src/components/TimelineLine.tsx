@@ -21,14 +21,17 @@ export default function TimelineLine() {
     }
 
     const draw = () => {
-      const parent = el.parentElement;
-      if (!parent) return;
-      const rect = parent.getBoundingClientRect();
+      // Measure against the section, not the Astro island wrapper —
+      // the wrapper has zero height, so parent.getBoundingClientRect()
+      // would always report top:0 and break the draw math.
+      const section = el.closest<HTMLElement>('#experience');
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
-      const start = vh * 0.78;
-      const end = vh * 0.5;
-      const travel = rect.height + (start - end);
-      const passed = start - rect.top;
+      // Draw over the full section: t=0 when the section top reaches the
+      // viewport bottom, t=1 when the section bottom reaches the top.
+      const travel = rect.height + vh;
+      const passed = vh - rect.top;
       const t = Math.max(0, Math.min(1, passed / travel));
       el.style.transform = 'scaleY(' + t.toFixed(4) + ')';
     };
