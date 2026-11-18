@@ -39,9 +39,9 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
   <body>
     <div class="grain" aria-hidden="true"></div>
     <!-- One scroll clock: progress bar, trailing glow, all parallax layers -->
-    <Cinematic client:visible />
+    <Cinematic client:load />
     <!-- Signature moment: hero scrolls out into the RAG pipeline -->
-    <HeroReframe client:visible />
+    <HeroReframe client:load />
 
     <Navbar />
 
@@ -141,7 +141,7 @@ import { caseStudies, projects, experiences, skillGroups } from '../data/work';
           <div class="relative pl-8 sm:pl-12">
             <!-- Hairline rail + scroll-drawn gold spine -->
             <div class="tl-rail" aria-hidden="true"></div>
-            <TimelineLine client:visible />
+            <TimelineLine client:load />
 
             <div class="space-y-14 md:space-y-16">
               {experiences.map((exp, i) => (
