@@ -1,25 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { subscribe } from '../lib/scrollStore';
 
 /*
  * HeroReframe — the signature moment.
  *
  * As the hero scrolls out of view, one progress value t (derived from
- * the hero's real geometry) maps three states:
- *   t=0  hero full — backdrop at rest, character at bottom-right
- *   t=1  hero gone — backdrop zoomed, three gold rules drawn across
- *        the right side of the viewport labeled with the RAG pipeline
- *        stages the hero copy names: RETRIEVAL -> AUGMENTATION ->
- *        GENERATION, and the character has drifted up and left through
- *        them.
- *   t>1  the rules dissolve so the rest of the page stays clean.
- *
- * Reversible on reverse scroll. Text column holds. Reduced motion and
+ * the hero's real geometry) drives the backdrop zoom and the character's
+ * drift up and left. Reversible on reverse scroll. Reduced motion and
  * no-JS leave the static t=0 frame.
  */
 export default function HeroReframe() {
-  const rulesRef = useRef<(HTMLSpanElement | null)[]>([]);
-
   useEffect(() => {
     const reducedMotion =
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,49 +32,19 @@ export default function HeroReframe() {
     measure();
     window.addEventListener('resize', measure, { passive: true });
 
-    const ruleEls = rulesRef.current;
-    // The labels sit on the bars but are themselves hidden until the
-    // bar they're attached to has drawn — so mark them visible when the
-    // first bar appears, and fade them out with the dissolve.
-    const labelEls = ruleEls
-      .map((el) => el?.querySelector('.relabel-text') as HTMLElement | null)
-      .filter(Boolean) as HTMLElement[];
-    if (labelEls.length) labelEls.forEach((el) => el.classList.add('visible'));
-
-    // Keep the visible flag in sync with the dissolve so the labels
-    // fade out with their bars when the hero has scrolled fully past.
-    const syncLabels = (t: number) => {
-      const dissolve = t >= 1 ? (1.25 - t) / 0.25 : 1;
-      labelEls.forEach((el) => {
-        el.classList.toggle('visible', dissolve > 0.01);
-      });
-    };
-
     const apply = (scrollY: number) => {
       // t: 0 = hero fully in view, 1 = hero fully scrolled past
-      const t = Math.min(1.25, Math.max(0, (scrollY - heroTop) / heroH));
+      const t = Math.min(1, Math.max(0, (scrollY - heroTop) / heroH));
 
       // Backdrop zooms as the data "loads in"
       const scale = 1 + t * 0.18;
       backdrop.style.transform = `scale(${scale.toFixed(3)})`;
       backdrop.style.transformOrigin = 'center top';
 
-      // Character drifts up and left through the pipeline bands
+      // Character drifts up and left out of the hero
       const tx = -t * 12;
       const ty = -t * 16;
       character.style.transform = `translate(${tx.toFixed(2)}vw, ${ty.toFixed(2)}vh)`;
-
-      // Three rules draw right->left, then dissolve after t>1
-      const dissolve = t >= 1 ? (1.25 - t) / 0.25 : 1; // 1 at t<=1, 0 at t>=1.25
-      for (let i = 0; i < 3; i++) {
-        const el = ruleEls[i];
-        if (!el) continue;
-        const seg = 1 / 3;
-        const local = Math.min(1, Math.max(0, (t - i * seg) / seg));
-        el.style.width = (local * 40).toFixed(2) + '%';
-        el.style.opacity = (local * dissolve).toFixed(3);
-      }
-      syncLabels(t);
     };
 
     const unsub = subscribe((y: number) => apply(y));
@@ -96,60 +56,5 @@ export default function HeroReframe() {
     };
   }, []);
 
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 5,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        padding: '22vh 0',
-      }}
-    >
-      {['retrieval', 'augmentation', 'generation'].map((label, i) => (
-        <span
-          key={label}
-          ref={(el) => (rulesRef.current[i] = el)}
-          className="relabel fade-in"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '0%',
-            opacity: 0,
-            marginLeft: 'auto',
-            transition: 'width 0.18s linear, opacity 0.2s linear',
-          }}
-        >
-          <span
-            style={{
-              width: '40%',
-              height: '1px',
-              background:
-                i === 1
-                  ? 'linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent)'
-                  : 'linear-gradient(90deg, transparent, var(--color-rule))',
-            }}
-          />
-          <span
-            className="relabel-text"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '10px',
-              letterSpacing: '0.24em',
-              color: i === 1 ? 'var(--color-gold)' : 'var(--color-dim)',
-              textTransform: 'uppercase',
-              whiteSpace: 'nowrap',
-              padding: '0 14px 0 10px',
-            }}
-          >
-            0{i + 1} — {label}
-          </span>
-        </span>
-      ))}
-    </div>
-  );
+  return null;
 }

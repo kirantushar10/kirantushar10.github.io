@@ -331,16 +331,7 @@
   opacity: 1;
 }
 
-/* Reframe pipeline labels — hidden until their bar draws, then fade in
-   with the bar. The bars themselves are driven by JS width/opacity. */
-.relabel-text {
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.relabel.visible .relabel-text {
-  opacity: 1;
-}
-
+ 
 /* ============================================================
    Skills marquee — chips sweep horizontally, alternating direction
    per row, with a gold glow. Pause on hover. Static under
@@ -534,9 +525,13 @@
   transform-origin: top;
   will-change: transform;
 }
+/* Node is 9px wide; left is set so its center sits on the rail center
+   (rail: left:56px from the outer .relative container). The node's
+   positioning ancestor is each item wrapper, whose left edge = the
+   container's padding (pl-8 / sm:pl-12). 20px / 4px center the dot. */
 .tl-node {
   position: absolute;
-  left: 1.5rem;
+  left: 20px;
   top: 6px;
   width: 9px;
   height: 9px;
@@ -548,7 +543,7 @@
 }
 @media (min-width: 640) {
   .tl-node {
-    left: 0.5rem;
+    left: 4px;
   }
 }
 .tl-node.visible {
