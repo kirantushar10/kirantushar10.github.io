@@ -27,19 +27,30 @@ export default function TimelineLine() {
     // Centre every node on the rail by measurement. The rail and the nodes
     // sit in different stacking contexts (the rail is a child of the padded
     // wrapper, the nodes are children of the flat item wrappers), so a fixed
-    // `left` can drift between breakpoints. Measuring the rail and setting
-    // each node's left from that keeps the dot on the line everywhere.
+    // `left` can drift between breakpoints. `left` is relative to the node's
+    // positioning ancestor, so resolve that ancestor and compute the absolute
+    // left that puts the node's centre exactly on the rail centre.
     const centerNodes = () => {
       if (!rail) return;
       const rc = rail.getBoundingClientRect();
       const railCenter = rc.left + rc.width / 2;
       nodes.forEach((n) => {
         const nr = n.getBoundingClientRect();
-        n.style.left = railCenter - nr.left - nr.width / 2 + 'px';
+        const anchor = n.offsetParent;
+        const ar = anchor ? anchor.getBoundingClientRect() : { left: 0 };
+        n.style.left = railCenter - nr.width / 2 - ar.left + 'px';
+        n.style.marginLeft = '0px';
       });
     };
 
     const draw = () => {
+      // Re-centre on every tick: each item wrapper carries a
+      // translateX reveal that moves while the item scrolls into view, and
+      // the node lives inside that wrapper. Computing `left` from the
+      // wrapper's *current* rect keeps the node pinned to the rail through
+      // the whole reveal — measuring once at mount lets the reveal jump it.
+      centerNodes();
+
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
       // Draw over the full section: t=0 when the section top reaches the
