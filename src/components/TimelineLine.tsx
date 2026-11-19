@@ -41,6 +41,35 @@ export default function TimelineLine() {
       });
     };
 
+    // Add small gap elements under the rail at each node's vertical position
+    // so the dot appears seated on the line rather than floating above it.
+    const addRailGaps = () => {
+      if (!rail) return;
+      // Remove existing gaps first
+      const existingGaps = rail.querySelectorAll('.tl-rail-gap');
+      existingGaps.forEach(g => g.remove());
+
+      // Add a gap element at each node's position. The gap is a thin rect
+      // that matches the page background, creating a break in the rail where
+      // the dot glows.
+      nodes.forEach((n) => {
+        const gap = document.createElement('div');
+        gap.className = 'tl-rail-gap';
+        gap.style.position = 'absolute';
+        gap.style.left = '0';
+        gap.style.width = '1px';
+        gap.style.height = '12px';
+        gap.style.background = 'var(--color-bg)';
+        gap.style.pointerEvents = 'none';
+        gap.style.zIndex = '10';
+        const nr = n.getBoundingClientRect();
+        const sectionRect = section.getBoundingClientRect();
+        const gapTop = nr.top - sectionRect.top;
+        gap.style.top = gapTop + 'px';
+        rail.appendChild(gap);
+      });
+    };
+
     const draw = () => {
       // Re-centre on every tick: each item wrapper carries a
       // translateX reveal that moves while the item scrolls into view, and
@@ -48,6 +77,10 @@ export default function TimelineLine() {
       // wrapper's *current* rect keeps the node pinned to the rail through
       // the whole reveal — measuring once at mount lets the reveal jump it.
       centerNodes();
+
+      // Update rail gap positions on every tick so they stay aligned
+      // with nodes even as scroll-reveal transforms shift them.
+      addRailGaps();
 
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
@@ -76,7 +109,7 @@ export default function TimelineLine() {
     centerNodes();
     draw();
     const unsub = subscribe(draw);
-    window.addEventListener('resize', () => { centerNodes(); draw(); }, { passive: true });
+    window.addEventListener('resize', () => { centerNodes(); draw(); addRailGaps(); }, { passive: true });
     return () => {
       unsub();
       window.removeEventListener('resize', centerNodes);
