@@ -1,4 +1,5 @@
 // Work data — case studies (full pages under /work/<slug>) + project list.
+
 // English only.
 
 export interface CaseStudy {
@@ -6,7 +7,6 @@ export interface CaseStudy {
   index: string;
   title: string;
   summary: string;
-  year: string;
   role: string;
   githubUrl: string;
   overview: string;
@@ -21,7 +21,6 @@ export interface Project {
   description: string;
   tags: string[];
   githubUrl: string;
-  year: string;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -30,7 +29,6 @@ export const caseStudies: CaseStudy[] = [
     index: '01',
     title: 'Conversational RAG Assistant',
     summary: 'Production-grade conversational RAG platform with semantic retrieval, multi-turn memory, and real-time observability.',
-    year: '2025',
     role: 'Design & Implementation',
     githubUrl: 'https://github.com/kirantushar10/Conversational-RAG-Assistant',
     overview: 'An advanced Retrieval-Augmented Generation chatbot built with LangChain, Groq LLaMA 3, Chroma, and Hugging Face embeddings. It supports multi-turn conversations, contextual memory, and LangSmith tracing for real-time observability — combining knowledge retrieval with LLM reasoning for context-aware Q&A.',
@@ -51,7 +49,6 @@ export const caseStudies: CaseStudy[] = [
     index: '02',
     title: 'Agentic Search Engine',
     summary: 'Autonomous reasoning agent that routes queries across Wikipedia, ArXiv papers, and live web search.',
-    year: '2025',
     role: 'Design & Implementation',
     githubUrl: 'https://github.com/kirantushar10/Search-Engine-with-Tools-and-Agents',
     overview: 'A search engine built with LangChain Tools, Groq LLaMA, HuggingFace Embeddings, and LangSmith Tracking. The agent decides which source each query needs — Wikipedia for encyclopedic facts, ArXiv for academic papers, and a custom web loader and retriever for live content — then synthesizes a grounded answer.',
@@ -70,7 +67,6 @@ export const caseStudies: CaseStudy[] = [
     index: '03',
     title: 'End-to-End ML Pipeline',
     summary: 'Complete MLOps pipeline: data versioning, experiment tracking, model registry, and CI/CD deployment.',
-    year: '2025',
     role: 'Design & Implementation',
     githubUrl: 'https://github.com/kirantushar10/Machine-Learning-Pipeline-with-DVC-MLflow-and-DagsHub',
     overview: 'A complete automated MLOps pipeline that handles data ingestion, validation, experiment tracking, model versioning, and containerized deployment — built on DVC for data, MLflow for experiments, and DagsHub for remote storage and CI.',
@@ -92,56 +88,56 @@ export const projects: Project[] = [
     description: 'Automated CI/CD pipeline using Pytest, Docker, and GitHub Actions for continuous build-test-deploy on every commit.',
     tags: ['Docker', 'GitHub Actions', 'Flask', 'Pytest'],
     githubUrl: 'https://github.com/kirantushar10/CI-CD-Pipeline-for-Dockerized-Flask-Application',
-    year: '2024',
+
   },
   {
     title: 'Enterprise Airflow & Postgres ETL',
     description: 'Production-style Airflow pipeline pulling NASA APOD API data, transforming JSON payloads, and loading into Dockerized Postgres via custom hooks.',
     tags: ['Apache Airflow', 'PostgreSQL', 'Docker', 'ETL'],
     githubUrl: 'https://github.com/kirantushar10/Apache-Airflow-ETL-With-Postgres-and-API',
-    year: '2024',
+
   },
   {
     title: 'NVIDIA NIM Document QA Assistant',
     description: 'Interactive Streamlit app leveraging NVIDIA Inference Microservices, FAISS vector search, and LLaMA 3.3 (70B) for deep document QA.',
     tags: ['NVIDIA NIM', 'LLaMA 3.3', 'FAISS', 'Streamlit'],
     githubUrl: 'https://github.com/kirantushar10/NVIDIA-NIM-RAG-Demo',
-    year: '2025',
+
   },
   {
     title: 'Multi-Strategy Summarizer',
     description: 'High-speed document summarizer supporting Stuff, Map-Reduce, and Refine chain architectures with multilingual output and token telemetry.',
     tags: ['LangChain', 'Groq', 'LLaMA 3.1', 'NLP'],
     githubUrl: 'https://github.com/kirantushar10/Text-Summarization-using-LangChain-and-Groq-LLaMA',
-    year: '2024',
+
   },
   {
     title: 'HamletGPT: LSTM vs GRU',
     description: 'Architectural benchmark of LSTM vs GRU trained on Hamlet, deployed with a side-by-side interactive predictor.',
     tags: ['LSTM', 'GRU', 'TensorFlow', 'Streamlit'],
     githubUrl: 'https://github.com/kirantushar10/HamletGPT-Next-Word-Prediction-with-LSTM-and-GRU',
-    year: '2023',
+
   },
   {
     title: 'Movie Review Sentiment Analysis',
     description: 'RNN binary classification model built with Keras/TensorFlow for real-time movie review sentiment inference.',
     tags: ['RNN', 'Keras', 'NLP', 'Streamlit'],
     githubUrl: 'https://github.com/kirantushar10/IMDB-Movie-Review-Sentiment-Analyzer-using-RNN',
-    year: '2023',
+
   },
   {
     title: 'Financial Analytics & ARIMA Forecasts',
     description: 'Financial dashboard computing technical indicators (RSI, MACD) and 30-day ARIMA price forecasts.',
     tags: ['ARIMA', 'Time Series', 'yfinance', 'Plotly'],
     githubUrl: 'https://github.com/kirantushar10/Stock-Market-Analysis-and-Time-Series-Forecasting',
-    year: '2023',
+
   },
   {
     title: 'Customer Churn Prediction',
     description: 'End-to-end deep learning churn classifier with Keras & Scikit-learn, deployed with an interactive web GUI.',
     tags: ['ANN', 'Deep Learning', 'Scikit-learn', 'Streamlit'],
     githubUrl: 'https://github.com/kirantushar10/ANN-Classification-Churn',
-    year: '2023',
+
   },
 ];
 
